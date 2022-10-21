@@ -11,6 +11,7 @@ namespace KursProject
         Graph graph;
         public List<Vertex> vertex_l;
         public List<EdgeN> edge_n;
+        public List<string> cycle_matrix;
         int flag = -1;
         bool Arrow = true;
         Algoritm alg;
@@ -20,6 +21,7 @@ namespace KursProject
             vertex_l = new List<Vertex>();
             edge_n = new List<EdgeN>();
             alg = new Algoritm();
+            cycle_matrix = new List<string>();
             graph = new Graph(Field.Size.Width, Field.Size.Height);
             Field.Image = graph.BitMap;
         }
@@ -104,30 +106,33 @@ namespace KursProject
         private void Cycle_Click(object sender, EventArgs e)
         {
             listBoxMatrix.Items.Clear();
+            cycle_matrix.Clear();
+
             int[] color = new int[vertex_l.Count];
             for (int i = 0; i < vertex_l.Count; i++)
             {
                 for (int j = 0; j < vertex_l.Count;j++)
                 {
                     color[j] = 1;
-                    List<int> cycle = new List<int>();
+                    List<int> cycle = new();
                     cycle.Add(i + 1);
                     DFScycle(i, i, edge_n, color, -1, cycle);
                 }
             }
-            
+
+
             List<string> boom = new();
 
-            for (int i = 0; i < listBoxMatrix.Items.Count; i++)
+            for (int i = 0; i < cycle_matrix.Count; i++)
             {
-                string? buffer = listBoxMatrix.Items[i].ToString();
+                string? buffer = cycle_matrix[i].ToString()!;
                 if (buffer[0] == buffer[buffer.Length - 1])
                     boom.Add(new string(buffer.Reverse().ToArray()));
             }
 
             boom = boom.Distinct().ToList();
 
-            listBoxMatrix.Items.Clear();
+
 
             for (int i = 0; i < boom.Count; i++)
             {
@@ -138,56 +143,57 @@ namespace KursProject
 
         public void DFScycle(int u, int endV, List<EdgeN> E, int[] color, int unavailableEdge, List<int> cycle)
         {
-            //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемс€, а вернутьс€ необходимо
-            if (u != endV)
-                color[u] = 2;
-            else
             {
-                if (cycle.Count >= 2)
+                //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемс€, а вернутьс€ необходимо
+                if (u != endV)
+                    color[u] = 2;
+                else
                 {
-                    cycle.Reverse();
-                    string s = cycle[0].ToString();
-                    for (int i = 1; i < cycle.Count; i++)
-                        s += "-" + cycle[i].ToString();
-                    bool flag = false; //есть ли палиндром дл€ этого цикла графа в листбоксе?
-                    for (int i = 0; i < listBoxMatrix.Items.Count; i++)
-                        if (listBoxMatrix.Items[i].ToString() == s)
-                        {
-                            flag = true;
-                            break;
-                        }
-                    if (!flag)
+                    if (cycle.Count >= 2)
                     {
                         cycle.Reverse();
-                        s = cycle[0].ToString();
+                        string s = cycle[0].ToString();
                         for (int i = 1; i < cycle.Count; i++)
                             s += "-" + cycle[i].ToString();
-                        listBoxMatrix.Items.Add(s);
+                        bool flag = false; //есть ли палиндром дл€ этого цикла графа в листбоксе?
+                        for (int i = 0; i < cycle_matrix.Count; i++)
+                            if (cycle_matrix[i].ToString() == s)
+                            {
+                                flag = true;
+                                break;
+                            }
+                        if (!flag)
+                        {
+                            cycle.Reverse();
+                            s = cycle[0].ToString();
+                            for (int i = 1; i < cycle.Count; i++)
+                                s += "-" + cycle[i].ToString();
+                            cycle_matrix.Add(s);
+                        }
+                        return;
                     }
-                    return;
                 }
-            }
-            for (int w = 0; w < E.Count; w++)
-            {
-                if (w == unavailableEdge)
-                    continue;
-                if (color[E[w].y] == 1 && E[w].x == u)
+                for (int w = 0; w < E.Count; w++)
                 {
-                    List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(E[w].y + 1);
-                    DFScycle(E[w].x, endV, E, color, w, cycleNEW);
-                    color[E[w].y] = 1;
-                }
-                else if (color[E[w].x] == 1 && E[w].y == u)
-                {
-                    List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(E[w].x + 1);
-                    DFScycle(E[w].x, endV, E, color, w, cycleNEW);
-                    color[E[w].x] = 1;
+                    if (w == unavailableEdge)
+                        continue;
+                    if (color[E[w].y] == 1 && E[w].x == u)
+                    {
+                        List<int> cycleNEW = new List<int>(cycle);
+                        cycleNEW.Add(E[w].y + 1);
+                        DFScycle(E[w].x, endV, E, color, w, cycleNEW);
+                        color[E[w].y] = 1;
+                    }
+                    else if (color[E[w].x] == 1 && E[w].y == u)
+                    {
+                        List<int> cycleNEW = new List<int>(cycle);
+                        cycleNEW.Add(E[w].x + 1);
+                        DFScycle(E[w].x, endV, E, color, w, cycleNEW);
+                        color[E[w].x] = 1;
+                    }
                 }
             }
         }
-
 
         private void listBoxMatrix_Click(object sender, EventArgs e)
         {
@@ -198,10 +204,7 @@ namespace KursProject
             {
                 if (listBoxMatrix.Items.Count == 0) return;
 
-                string? temp = listBoxMatrix.SelectedItem.ToString();
-
-                temp = temp.Replace("-", "");
-                temp = temp.Replace(" ", "");
+                string temp = listBoxMatrix.SelectedItem.ToString()!.Replace("-","");
 
                 List<EdgeN> buffer = new();
 
@@ -214,7 +217,6 @@ namespace KursProject
                     Console.WriteLine(temp[i + 1]);
                 }
                 Console.WriteLine();
-                //graph.DrawGraph(vertex_l, edge_n,Configuration.eclipsePen);
                 graph.DrawCycle(vertex_l, buffer);
 
                 Field.Image = graph.BitMap;
@@ -222,5 +224,11 @@ namespace KursProject
             catch(Exception exc) { MessageBox.Show("Ёлемент не выбран" + exc.Message, "ќшибка"); }
 
         }
+
+        // ѕереосмысление: дискретна€ математика и линейна€ алгебра > мой хуй
+
+
+
     }
+
 }

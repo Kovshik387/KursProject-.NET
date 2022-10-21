@@ -34,10 +34,7 @@ namespace KursProject
             this.y = y;
         }
 
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public object Clone() => MemberwiseClone();
 
     }
 
@@ -47,6 +44,7 @@ namespace KursProject
         public static Pen SelectedPen = new Pen(Color.SkyBlue)
         {
             Width = 3,
+            EndCap = LineCap.ArrowAnchor,
         };
 
         public static Pen eclipsePen = new Pen(Color.White)
@@ -101,6 +99,7 @@ namespace KursProject
 
         public void DrawCycle(List<Vertex> vert, List<EdgeN> edge)
         {
+            Console.Write(default(int));
             ClearField();
             for (int i = 0; i < edge.Count; i++)
             {
@@ -124,8 +123,6 @@ namespace KursProject
 
         }
 
-
-
         public void DrawGraph(List<Vertex> vert, List<EdgeN> edge, Pen pen)
         {
 
@@ -138,7 +135,6 @@ namespace KursProject
                 {
                     graphics.DrawLine(Configuration.EdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
                         vert[edge[i].y].v_x + Radius, vert[edge[i].y].v_y + Radius);
-                    // Не нужно Исправить!
                     graphics.DrawLine(Configuration.MiddleEdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
                           (vert[edge[i].x].v_x + Radius +  vert[edge[i].y].v_x + Radius) / 2, (vert[edge[i].x].v_y + Radius + vert[edge[i].y].v_y + Radius) / 2);
                 }
@@ -227,5 +223,7 @@ namespace KursProject
         }
 
         // Переосмысление
+
+
     }
 }
