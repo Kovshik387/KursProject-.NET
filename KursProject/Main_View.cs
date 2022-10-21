@@ -112,13 +112,11 @@ namespace KursProject
             for (int i = 0; i < vertex_l.Count; i++)
             {
                 for (int j = 0; j < vertex_l.Count;j++)
-                {
                     color[j] = 1;
-                    List<int> cycle = new();
-                    cycle.Add(i + 1);
-                    DFScycle(i, i, edge_n, color, -1, cycle);
-                }
-            }
+                List<int> cycle = new();
+                cycle.Add(i + 1);
+                DFScycle(i, i, edge_n, color, -1, cycle);
+            }           
 
 
             List<string> boom = new();
@@ -132,12 +130,8 @@ namespace KursProject
 
             boom = boom.Distinct().ToList();
 
+            for (int i = 0; i < boom.Count; i++)  listBoxMatrix.Items.Add(boom[i]);
 
-
-            for (int i = 0; i < boom.Count; i++)
-            {
-                listBoxMatrix.Items.Add(boom[i]);
-            }
 
         }
 
@@ -173,15 +167,16 @@ namespace KursProject
                         return;
                     }
                 }
+
                 for (int w = 0; w < E.Count; w++)
                 {
-                    if (w == unavailableEdge)
-                        continue;
+                    if (w == unavailableEdge) continue;
+
                     if (color[E[w].y] == 1 && E[w].x == u)
                     {
                         List<int> cycleNEW = new List<int>(cycle);
                         cycleNEW.Add(E[w].y + 1);
-                        DFScycle(E[w].x, endV, E, color, w, cycleNEW);
+                        DFScycle(E[w].y, endV, E, color, w, cycleNEW);
                         color[E[w].y] = 1;
                     }
                     else if (color[E[w].x] == 1 && E[w].y == u)
@@ -208,11 +203,15 @@ namespace KursProject
 
                 List<EdgeN> buffer = new();
 
+                var splito4ek = temp.Split("-");
+
                 for (int i = 0; i < temp.Length - 1; i++)
                 {
                     int buff_1 = int.Parse(temp[i].ToString());
                     int buff_2 = int.Parse(temp[i + 1].ToString());
                     buffer.Add(new(buff_1, buff_2));
+/*                        (int.Parse(new string(splito4ek[i].ToCharArray().Reverse().ToArray())), 
+                        int.Parse(new string(splito4ek[i + 1].ToCharArray().Reverse().ToArray()))));*/
                     Console.WriteLine(temp[i]);
                     Console.WriteLine(temp[i + 1]);
                 }

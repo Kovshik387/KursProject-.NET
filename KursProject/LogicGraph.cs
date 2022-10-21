@@ -60,6 +60,7 @@ namespace KursProject
         public static Pen EdgePen = new Pen(Color.DarkGray)
         {
             Width = 5,
+            EndCap = LineCap.ArrowAnchor,
         };
 
         public static Pen MiddleEdgePen = new Pen(Color.DarkGray)
@@ -190,6 +191,13 @@ namespace KursProject
         public void SearchStringGraph(List<Vertex> vert, int x, int y,List<EdgeN> ede)
         {
             int index = SearchVertex(vert, x, y);
+            
+            for(int i = 0; i < ede.Count; i++)
+            {
+                if (ede[i].x == index && ede[i].y == Position)
+                    return;
+            }
+
             if (index != -1)
             {
                 ede.Add(new(Position,index));
