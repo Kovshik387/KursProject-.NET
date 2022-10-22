@@ -40,30 +40,30 @@ namespace KursProject
     public class Configuration
     {
 
-        public static Pen SelectedPen = new Pen(Color.SkyBlue)
+        public static Pen SelectedPen = new(Color.SkyBlue)
         {
-            Width = 3,
+            Width = 5,
             EndCap = LineCap.ArrowAnchor,
         };
 
-        public static Pen SelectedMiddle = new Pen(Color.SkyBlue)
+        public static Pen SelectedMiddle = new(Color.SkyBlue)
         {
             Width = 5,
             CustomEndCap = new AdjustableArrowCap(3, 4),
         };
 
-        public static Pen selectedPen = new Pen(Color.Black)
+        public static Pen selectedPen = new(Color.Black)
         {
             Width = 3,
         };
 
-        public static Pen EdgePen = new Pen(Color.DarkGray)
+        public static Pen EdgePen = new(Color.DarkGray)
         {
             Width = 5,
             EndCap = LineCap.ArrowAnchor,
         };
 
-        public static Pen MiddleEdgePen = new Pen(Color.DarkGray)
+        public static Pen MiddleEdgePen = new(Color.DarkGray)
         {
             Width = 6,
             //EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor,
@@ -172,12 +172,26 @@ namespace KursProject
 
         }
 
-        public void DrawGraph(List<Vertex> vert, List<EdgeN> edge)
+
+
+        public void DrawGraph(List<Vertex> vert, List<EdgeN> edge, int cursor)
         {
 
             ClearField();
             for (int i = 0; i < edge.Count; i++)
             {
+
+                if (i == cursor)  if (edge[cursor].x == edge[cursor].y) graphics.DrawArc(Configuration.SelectedPen,
+                vert[edge[cursor].x].v_x - Radius, vert[edge[cursor].x].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+            else
+            {
+                graphics.DrawLine(Configuration.SelectedPen, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
+                vert[edge[cursor].y].v_x + Radius, vert[edge[cursor].y].v_y + Radius);
+                graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
+                      (vert[edge[cursor].x].v_x + Radius + vert[edge[cursor].y].v_x + Radius) / 2, (vert[edge[cursor].x].v_y + Radius + vert[edge[cursor].y].v_y + Radius) / 2);
+                continue;
+            }
+
                 if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.EdgePen,
                     vert[edge[i].x].v_x - Radius, vert[edge[i].y].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
                 else
@@ -195,6 +209,8 @@ namespace KursProject
                 graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.insidebrush, vert[i].v_x + 6, vert[i].v_y + 4);
             }
         }
+
+
 
         public bool InTheRangeVertex(List<Vertex> vertex, int x, int y)
         {
@@ -216,6 +232,18 @@ namespace KursProject
             vertex[cursor].v_y = y;
         }
 
+        public void DrawLine(EdgeN edge, List<Vertex> vert)
+        {
+            if (edge.x == edge.y) graphics.DrawArc(Configuration.SelectedPen,
+                vert[edge.x].v_x - Radius, vert[edge.x].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+            else
+            {
+                graphics.DrawLine(Configuration.SelectedPen, vert[edge.x].v_x + Radius, vert[edge.x].v_y + Radius,
+                vert[edge.y].v_x + Radius, vert[edge.y].v_y + Radius);
+                graphics.DrawLine(Configuration.SelectedMiddle, vert[edge.x].v_x + Radius, vert[edge.x].v_y + Radius,
+                      (vert[edge.x].v_x + Radius + vert[edge.y].v_x + Radius) / 2, (vert[edge.x].v_y + Radius + vert[edge.y].v_y + Radius) / 2);
+            }
+        }
         public void RemoveEdge(List<Vertex> vertex, List<EdgeN> edge,int x, int y)
         {
             for (int i = 0; i < edge.Count;i++)
@@ -228,6 +256,12 @@ namespace KursProject
                         edge.RemoveAt(i);
                 }
             }
+        }
+
+        public void RemoveEdge(List<EdgeN> edge, int cursor)
+        {
+            if (edge.Count == 0) edge.Clear();
+            else edge.RemoveAt(cursor);
         }
 
         public void RemoveVertex(List<Vertex> vertex, List<EdgeN> edge, int x, int y)
@@ -272,7 +306,7 @@ namespace KursProject
             {
                 if ((Math.Abs(x - vert[i].v_x) <= Radius) && (Math.Abs(y - vert[i].v_y) <= Radius))
                 {
-                    DrawGraph(vert, edge);
+                    DrawGraph(vert, edge,-1);
                     graphics.FillEllipse(Configuration.SelectedBrush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
                     graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.brush, vert[i].v_x + 6, vert[i].v_y + 4);
                     StartVertex = vert[i];
@@ -280,7 +314,7 @@ namespace KursProject
                     counter = 1;
                     break;
                 }
-                else { DrawGraph(vert, edge); StartVertex = null; counter = 0; }
+                else { DrawGraph(vert, edge,-1); StartVertex = null; counter = 0; }
             }
         }
 

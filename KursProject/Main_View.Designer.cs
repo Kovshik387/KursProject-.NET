@@ -34,11 +34,14 @@
             this.view_vertex = new System.Windows.Forms.Button();
             this.Chain = new System.Windows.Forms.Button();
             this.Cycle = new System.Windows.Forms.Button();
-            this.listBoxMatrix = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Delete_Edge = new System.Windows.Forms.TabPage();
+            this.DeleteEdge = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.ListBoxMatrix = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.Field)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.Delete_Edge.SuspendLayout();
@@ -47,6 +50,9 @@
             // 
             // Field
             // 
+            this.Field.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Field.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Field.Location = new System.Drawing.Point(12, 43);
             this.Field.Name = "Field";
@@ -105,19 +111,9 @@
             this.Cycle.UseVisualStyleBackColor = true;
             this.Cycle.Click += new System.EventHandler(this.Cycle_Click);
             // 
-            // listBoxMatrix
-            // 
-            this.listBoxMatrix.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBoxMatrix.FormattingEnabled = true;
-            this.listBoxMatrix.ItemHeight = 15;
-            this.listBoxMatrix.Location = new System.Drawing.Point(3, 43);
-            this.listBoxMatrix.Name = "listBoxMatrix";
-            this.listBoxMatrix.Size = new System.Drawing.Size(254, 392);
-            this.listBoxMatrix.TabIndex = 8;
-            this.listBoxMatrix.Click += new System.EventHandler(this.ListBoxMatrix_Click);
-            // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.Delete_Edge);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(626, 45);
@@ -128,6 +124,7 @@
             // 
             // Delete_Edge
             // 
+            this.Delete_Edge.Controls.Add(this.DeleteEdge);
             this.Delete_Edge.Controls.Add(this.listView1);
             this.Delete_Edge.Location = new System.Drawing.Point(4, 24);
             this.Delete_Edge.Name = "Delete_Edge";
@@ -137,20 +134,44 @@
             this.Delete_Edge.Text = "Ребра";
             this.Delete_Edge.UseVisualStyleBackColor = true;
             // 
+            // DeleteEdge
+            // 
+            this.DeleteEdge.Location = new System.Drawing.Point(3, 408);
+            this.DeleteEdge.Name = "DeleteEdge";
+            this.DeleteEdge.Size = new System.Drawing.Size(251, 27);
+            this.DeleteEdge.TabIndex = 1;
+            this.DeleteEdge.Text = "Удалить ребро";
+            this.DeleteEdge.UseVisualStyleBackColor = true;
+            this.DeleteEdge.Click += new System.EventHandler(this.DeleteEdge_Click_1);
+            // 
             // listView1
             // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 6);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(254, 432);
+            this.listView1.Size = new System.Drawing.Size(251, 396);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "ID";
+            this.columnHeader1.Width = 100;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Путь";
+            this.columnHeader2.Width = 100;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.listBoxMatrix);
+            this.tabPage2.Controls.Add(this.ListBoxMatrix);
             this.tabPage2.Controls.Add(this.Cycle);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
@@ -159,6 +180,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Контур";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // ListBoxMatrix
+            // 
+            this.ListBoxMatrix.FormattingEnabled = true;
+            this.ListBoxMatrix.ItemHeight = 15;
+            this.ListBoxMatrix.Location = new System.Drawing.Point(6, 48);
+            this.ListBoxMatrix.Name = "ListBoxMatrix";
+            this.ListBoxMatrix.Size = new System.Drawing.Size(248, 379);
+            this.ListBoxMatrix.TabIndex = 8;
+            this.ListBoxMatrix.Click += new System.EventHandler(this.ListBoxMatrix_Click_1);
             // 
             // Main_View
             // 
@@ -189,10 +220,13 @@
         private Button view_vertex;
         private Button Chain;
         private Button Cycle;
-        private ListBox listBoxMatrix;
         private TabControl tabControl1;
         private TabPage Delete_Edge;
         private TabPage tabPage2;
         private ListView listView1;
+        private ListBox ListBoxMatrix;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private Button DeleteEdge;
     }
 }

@@ -35,12 +35,12 @@ namespace KursProject
                 case 1:
                     if (graph.InTheRangeVertex(vertex_l, e.X, e.Y)) return;
                     vertex_l.Add(new(e.X - graph.Radius , e.Y - graph.Radius));
-                    graph.DrawGraph(vertex_l, edge_n);
+                    graph.DrawGraph(vertex_l, edge_n,-1);
                     Field.Image = graph.BitMap;
                     break;
                 case 2:
                     graph.RemoveVertex(vertex_l,edge_n, e.X - graph.Radius, e.Y - graph.Radius);
-                    graph.DrawGraph(vertex_l, edge_n);
+                    graph.DrawGraph(vertex_l, edge_n,-1);
                     Field.Image = graph.BitMap;
                     break;
                 case 3:
@@ -53,7 +53,7 @@ namespace KursProject
                     else
                     {
                         if (graph.Position != -1) graph.DragVertex(vertex_l, graph.Position, e.X - graph.Radius, e.Y - graph.Radius);
-                        graph.DrawGraph(vertex_l, edge_n);
+                        graph.DrawGraph(vertex_l, edge_n, -1);
                         NewLocation = true;
                     }
                     Field.Image = graph.BitMap;
@@ -69,19 +69,29 @@ namespace KursProject
                     {
                         if (graph.counter == 1)
                         {
-                            listView1.Clear();
-                            graph.SearchStringGraph(vertex_l, e.X - graph.Radius, e.Y - graph.Radius,edge_n);
-                            for (int i = 0; i < edge_n.Count;i++) 
-                                    listView1.Items.Add((edge_n[i].x + 1).ToString() + " " + (edge_n[i].y+1).ToString());
+                            listView1.Items.Clear();
+                            graph.SearchStringGraph(vertex_l, e.X - graph.Radius, e.Y - graph.Radius, edge_n);
+                            for (int i = 0; i < edge_n.Count; i++)
+                            {
+                                ListViewItem newItem = new ListViewItem((i + 1).ToString());
+
+                                int buff1 = edge_n[i].x + 1;
+                                int buff2 = edge_n[i].y + 1;
+
+                                string Nikita = $"{buff1}->{buff2}";
+                                ListViewItem.ListViewSubItem Path = new ListViewItem.ListViewSubItem(newItem, (Nikita));
+                                newItem.SubItems.Add(Path);
+                                listView1.Items.AddRange(new ListViewItem[] { newItem });
+                            }
+
                         }
                         Field.Image = graph.BitMap;
                         Arrow = true;
-                        graph.DrawGraph(vertex_l, edge_n);
+                        graph.DrawGraph(vertex_l, edge_n, -1);
                         break;
                     }
                 case 5:
-                    graph.RemoveEdge(vertex_l, edge_n,e.X,e.Y);
-                    graph.DrawGraph(vertex_l, edge_n);
+                    graph.DrawGraph(vertex_l, edge_n, -1);
                     Field.Image = graph.BitMap;
                     break;
             }
@@ -115,7 +125,7 @@ namespace KursProject
 
         private void Chain_Click(object sender, EventArgs e)
         {
-            graph.DrawGraph(vertex_l, edge_n);
+            graph.DrawGraph(vertex_l, edge_n,-1);
             Field.Image = graph.BitMap;
             flag = 4;
             Draww.Enabled = true;
@@ -123,20 +133,32 @@ namespace KursProject
             view_vertex.Enabled = true;
             Chain.Enabled = false;
         }
-        private void DeleteEdge_Click(object sender, EventArgs e)
+
+        private void DeleteEdge_Click_1(object sender, EventArgs e)
         {
-            graph.DrawGraph(vertex_l, edge_n);
+            graph.RemoveEdge(edge_n, int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1);
+            Console.WriteLine(int.Parse(listView1.FocusedItem.SubItems[0].Text));
+            listView1.Items.Clear();
+            for (int i = 0; i < edge_n.Count; i++)
+            {
+                ListViewItem newItem = new ListViewItem((i + 1).ToString());
+
+                int buff1 = edge_n[i].x + 1;
+                int buff2 = edge_n[i].y + 1;
+
+                string Nikita = $"{buff1}->{buff2}";
+
+                ListViewItem.ListViewSubItem Path = new ListViewItem.ListViewSubItem(newItem, Nikita);
+                newItem.SubItems.Add(Path);
+                listView1.Items.AddRange(new ListViewItem[] { newItem });
+            }
+            graph.DrawGraph(vertex_l, edge_n, -1);
             Field.Image = graph.BitMap;
-            flag = 5;
-            Draww.Enabled = true;
-            delete_vertex.Enabled = true;
-            view_vertex.Enabled = true;
-            Chain.Enabled = true;
         }
 
         private void Cycle_Click(object sender, EventArgs e)
         {
-            listBoxMatrix.Items.Clear();
+            ListBoxMatrix.Items.Clear();
             cycle_matrix.Clear();
 
             int[] color = new int[vertex_l.Count];
@@ -148,26 +170,23 @@ namespace KursProject
                 alg.DFScycle(i, i, edge_n, color, -1, cycle,cycle_matrix);
             }
 
-            for (int i = 0; i < cycle_matrix.Count; i++) listBoxMatrix.Items.Add(cycle_matrix[i]);
+            for (int i = 0; i < cycle_matrix.Count; i++) ListBoxMatrix.Items.Add(cycle_matrix[i]);
         }
 
-        private void ListBoxMatrix_Click(object sender, EventArgs e)
+        private void ListBoxMatrix_Click_1(object sender, EventArgs e)
         {
             graph.ClearField();
-            graph.DrawGraph(vertex_l, edge_n);
+            graph.DrawGraph(vertex_l, edge_n, -1);
 
             try
             {
-                //if (listBoxMatrix.Items.Count == 0) return;
-                if (listBoxMatrix.SelectedItem == null) { graph.DrawGraph(vertex_l, edge_n); listBoxMatrix.ClearSelected(); return; } ;
+                if (ListBoxMatrix.Items.Count == 0) return;
+                if (ListBoxMatrix == null) { graph.DrawGraph(vertex_l, edge_n, -1); ListBoxMatrix!.ClearSelected(); return; } ;
 
-                string temp = listBoxMatrix.SelectedItem.ToString()!.Replace("-","");
-
-                listBoxMatrix.ClearSelected();
+                string temp = ListBoxMatrix.SelectedItem.ToString()!.Replace("-", "");
+                Console.WriteLine(temp);
 
                 List<EdgeN> buffer = new();
-
-                var splito4ek = temp.Split("-");
 
                 for (int i = 0; i < temp.Length - 1; i++)
                 {
@@ -177,9 +196,23 @@ namespace KursProject
 
                 Field.Image = graph.BitMap;
             }
-            catch(Exception exc) { MessageBox.Show("Ёлемент не выбран\n" + exc.Message, "ќшибка"); }
+            catch (Exception exc) { MessageBox.Show("Ёлемент не выбран\n" + exc.Message, "ќшибка"); }
 
         }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EdgeN ede = edge_n[int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1];
+            
+            //graph.DrawLine(ede, vertex_l);
+            Field.Image = graph.BitMap;
+            graph.DrawGraph(vertex_l, edge_n, int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1);
+            
+
+
+        }
+
+
 
         // ѕереосмысление: дискретна€ математика и линейна€ алгебра > мой хуй
     }
