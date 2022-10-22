@@ -210,6 +210,12 @@ namespace KursProject
             return -1;
         }
 
+        public void DragVertex(List<Vertex> vertex,int cursor,int x, int y)
+        {
+            vertex[cursor].v_x = x;
+            vertex[cursor].v_y = y;
+        }
+
         public void RemoveEdge(List<Vertex> vertex, List<EdgeN> edge,int x, int y)
         {
             for (int i = 0; i < edge.Count;i++)
@@ -255,6 +261,7 @@ namespace KursProject
             if (index != -1)
             {
                 ede.Add(new(Position,index));
+                
                 counter = 0;
                 StartVertex = null;
             }

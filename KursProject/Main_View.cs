@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.Metrics;
 using System.Drawing.Drawing2D;
+using System.Reflection.Metadata.Ecma335;
 using System.Windows.Forms.VisualStyles;
 
 namespace KursProject
@@ -15,6 +16,7 @@ namespace KursProject
         public Algoritm alg;
         int flag = -1;
         bool Arrow = true;
+        bool NewLocation = true;
         public Main_View()
         {
             InitializeComponent();
@@ -42,7 +44,18 @@ namespace KursProject
                     Field.Image = graph.BitMap;
                     break;
                 case 3:
-                    graph.ChangeColorVertex(vertex_l, edge_n, e.X - graph.Radius, e.Y - graph.Radius);
+                    if (NewLocation)
+                    {
+                        graph.ChangeColorVertex(vertex_l, edge_n, e.X - graph.Radius, e.Y - graph.Radius);
+                        graph.Position = graph.SearchVertex(vertex_l, e.X - graph.Radius, e.Y - graph.Radius);
+                        NewLocation = false;
+                    }
+                    else
+                    {
+                        if (graph.Position != -1) graph.DragVertex(vertex_l, graph.Position, e.X - graph.Radius, e.Y - graph.Radius);
+                        graph.DrawGraph(vertex_l, edge_n);
+                        NewLocation = true;
+                    }
                     Field.Image = graph.BitMap;
                     break;
                 case 4:
@@ -56,7 +69,10 @@ namespace KursProject
                     {
                         if (graph.counter == 1)
                         {
+                            listView1.Clear();
                             graph.SearchStringGraph(vertex_l, e.X - graph.Radius, e.Y - graph.Radius,edge_n);
+                            for (int i = 0; i < edge_n.Count;i++) 
+                                    listView1.Items.Add((edge_n[i].x + 1).ToString() + " " + (edge_n[i].y+1).ToString());
                         }
                         Field.Image = graph.BitMap;
                         Arrow = true;
@@ -77,7 +93,6 @@ namespace KursProject
             delete_vertex.Enabled = true;
             view_vertex.Enabled = true;
             Chain.Enabled = true;
-            DeleteEdge.Enabled = true;
         }
 
         private void Delete_vertex_Click(object sender, EventArgs e)
@@ -87,7 +102,6 @@ namespace KursProject
             delete_vertex.Enabled = false;
             view_vertex.Enabled = true;
             Chain.Enabled = true;
-            DeleteEdge.Enabled = true;
         }
 
         private void View_vertex_Click(object sender, EventArgs e)
@@ -97,7 +111,6 @@ namespace KursProject
             delete_vertex.Enabled = true;
             view_vertex.Enabled = false;
             Chain.Enabled = true;
-            DeleteEdge.Enabled = true;
         }
 
         private void Chain_Click(object sender, EventArgs e)
@@ -109,7 +122,6 @@ namespace KursProject
             delete_vertex.Enabled = true;
             view_vertex.Enabled = true;
             Chain.Enabled = false;
-            DeleteEdge.Enabled = true;
         }
         private void DeleteEdge_Click(object sender, EventArgs e)
         {
@@ -120,7 +132,6 @@ namespace KursProject
             delete_vertex.Enabled = true;
             view_vertex.Enabled = true;
             Chain.Enabled = true;
-            DeleteEdge.Enabled = false;
         }
 
         private void Cycle_Click(object sender, EventArgs e)
@@ -151,6 +162,8 @@ namespace KursProject
                 if (listBoxMatrix.SelectedItem == null) { graph.DrawGraph(vertex_l, edge_n); listBoxMatrix.ClearSelected(); return; } ;
 
                 string temp = listBoxMatrix.SelectedItem.ToString()!.Replace("-","");
+
+                listBoxMatrix.ClearSelected();
 
                 List<EdgeN> buffer = new();
 
