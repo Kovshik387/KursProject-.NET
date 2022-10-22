@@ -33,7 +33,6 @@ namespace KursProject
             this.x = x;
             this.y = y;
         }
-
         public object Clone() => MemberwiseClone();
 
     }
@@ -47,9 +46,10 @@ namespace KursProject
             EndCap = LineCap.ArrowAnchor,
         };
 
-        public static Pen eclipsePen = new Pen(Color.White)
+        public static Pen SelectedMiddle = new Pen(Color.SkyBlue)
         {
-            Width = 3,
+            Width = 5,
+            CustomEndCap = new AdjustableArrowCap(3, 4),
         };
 
         public static Pen selectedPen = new Pen(Color.Black)
@@ -74,11 +74,57 @@ namespace KursProject
         public static Brush brush = Brushes.Black;
         public static Brush insidebrush = Brushes.White;
         public static Brush SelectedBrush = Brushes.SkyBlue;
+        public static Brush StartCycle = Brushes.RoyalBlue;
     }
 
     public class Algoritm
     {
-       
+        public void DFScycle(int postition, int endVert, List<EdgeN> E, int[] color, int unavailableEdge, List<int> cycle, List<string> cycle_matrix)
+        {
+            //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемся, а вернуться необходимо
+            if (postition != endVert)
+                color[postition] = 2;
+            else
+            {
+                if (cycle.Count >= 2)
+                {
+                    cycle.Reverse();
+                    string s = cycle[0].ToString();
+                    for (int i = 1; i < cycle.Count; i++)
+                        s += "-" + cycle[i].ToString();
+                    bool flag = false; //есть ли палиндром для этого цикла графа в листбоксе?
+                    for (int i = 0; i < cycle_matrix.Count; i++)
+                        if (cycle_matrix[i].ToString() == s)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    if (!flag)
+                    {
+                        cycle.Reverse();
+                        s = cycle[0].ToString();
+                        for (int i = 1; i < cycle.Count; i++)
+                            s += "-" + cycle[i].ToString();
+                        cycle_matrix.Add(s);
+                    }
+                    return;
+                }
+            }
+
+            for (int w = 0; w < E.Count; w++)
+            {
+                if (w == unavailableEdge) continue;
+
+                if (color[E[w].y] == 1 && E[w].x == postition)
+                {
+                    List<int> cycleNEW = new(cycle);
+                    cycleNEW.Add(E[w].y + 1);
+                    DFScycle(E[w].y, endVert, E, color, w, cycleNEW, cycle_matrix);
+                    color[E[w].y] = 1;
+                }
+            }
+
+        }
     }
 
     public class Graph
@@ -100,31 +146,33 @@ namespace KursProject
 
         public void DrawCycle(List<Vertex> vert, List<EdgeN> edge)
         {
-            Console.Write(default(int));
             ClearField();
             for (int i = 0; i < edge.Count; i++)
             {
                 if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.SelectedPen,
                     vert[edge[i].x - 1].v_x - Radius, vert[edge[i].x - 1].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
                 else
-                { 
+                {
                     graphics.DrawLine(Configuration.SelectedPen, vert[edge[i].x - 1].v_x + Radius, vert[edge[i].x - 1].v_y + Radius,
-                        vert[edge[i].y - 1].v_x + Radius, vert[edge[i].y - 1].v_y + Radius);
+                    vert[edge[i].y - 1].v_x + Radius, vert[edge[i].y - 1].v_y + Radius);
+                    graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[i].x - 1].v_x + Radius, vert[edge[i].x - 1].v_y + Radius,
+                          (vert[edge[i].x - 1].v_x + Radius + vert[edge[i].y - 1].v_x + Radius) / 2, (vert[edge[i].x - 1].v_y + Radius + vert[edge[i].y - 1].v_y + Radius) / 2);
                 }
             }
 
-            for (int i = 0; i < edge.Count; i++)
+            graphics.FillEllipse(Configuration.StartCycle, vert[edge[0].x - 1].v_x, vert[edge[0].x - 1].v_y, Radius * 2, Radius * 2);
+            graphics.DrawString((edge[0].x).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[0].x - 1].v_x + 6, vert[edge[0].x - 1].v_y + 4);
+
+            for (int i = 1; i < edge.Count; i++)
             {
                 graphics.FillEllipse(Configuration.SelectedBrush, vert[edge[i].x - 1].v_x, vert[edge[i].x - 1].v_y, Radius * 2, Radius * 2);
                 graphics.DrawString((edge[i].x).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[i].x - 1].v_x + 6, vert[edge[i].x - 1].v_y + 4);
 
-                graphics.FillEllipse(Configuration.SelectedBrush, vert[edge[i].y - 1].v_x, vert[edge[i].y - 1].v_y, Radius * 2, Radius * 2);
-                graphics.DrawString((edge[i].y).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[i].y - 1].v_x + 6, vert[edge[i].y - 1].v_y + 4);
             }
 
         }
 
-        public void DrawGraph(List<Vertex> vert, List<EdgeN> edge, Pen pen)
+        public void DrawGraph(List<Vertex> vert, List<EdgeN> edge)
         {
 
             ClearField();
@@ -162,6 +210,20 @@ namespace KursProject
             return -1;
         }
 
+        public void RemoveEdge(List<Vertex> vertex, List<EdgeN> edge,int x, int y)
+        {
+            for (int i = 0; i < edge.Count;i++)
+            {
+                if (edge[i].x == edge[i].y) // Петля
+                {
+                    if ((Math.Pow((vertex[edge[i].x].v_x - Radius - x), 2) + (Math.Pow((vertex[edge[i].y].v_y - Radius - y), 2))) <= (Math.Pow(Radius + 4, 2))
+                        &&
+                       (Math.Pow((vertex[edge[i].x].v_x - Radius - x), 2) + (Math.Pow((vertex[edge[i].y].v_y - Radius - y), 2))) >= (Math.Pow(Radius - 4, 2)))
+                        edge.RemoveAt(i);
+                }
+            }
+        }
+
         public void RemoveVertex(List<Vertex> vertex, List<EdgeN> edge, int x, int y)
         {
             for (int i = 0; i < vertex.Count; i++)
@@ -185,18 +247,10 @@ namespace KursProject
                     break;
                 }
             }
-            
         }
-
         public void SearchStringGraph(List<Vertex> vert, int x, int y,List<EdgeN> ede)
         {
             int index = SearchVertex(vert, x, y);
-            
-            for(int i = 0; i < ede.Count; i++)
-            {
-                if (ede[i].x == index && ede[i].y == Position)
-                    return;
-            }
 
             if (index != -1)
             {
@@ -205,14 +259,13 @@ namespace KursProject
                 StartVertex = null;
             }
         }
-        public void ChangeColorVertex(List<Vertex> vert, List<EdgeN> edge, Pen pen, int x, int y)
+        public void ChangeColorVertex(List<Vertex> vert, List<EdgeN> edge, int x, int y)
         {
             for (int i = 0; i < vert.Count; i++)
             {
                 if ((Math.Abs(x - vert[i].v_x) <= Radius) && (Math.Abs(y - vert[i].v_y) <= Radius))
                 {
-                    DrawGraph(vert, edge, pen);
-                    Console.WriteLine("Есть пробитие");
+                    DrawGraph(vert, edge);
                     graphics.FillEllipse(Configuration.SelectedBrush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
                     graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.brush, vert[i].v_x + 6, vert[i].v_y + 4);
                     StartVertex = vert[i];
@@ -220,9 +273,8 @@ namespace KursProject
                     counter = 1;
                     break;
                 }
-                else { DrawGraph(vert, edge, pen); StartVertex = null; counter = 0; }
+                else { DrawGraph(vert, edge); StartVertex = null; counter = 0; }
             }
-            Console.WriteLine("Промах");
         }
 
         public void ClearField()
