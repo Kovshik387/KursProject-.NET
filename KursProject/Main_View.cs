@@ -77,11 +77,11 @@ namespace KursProject
                         }
                         Field.Image = graph.BitMap;
                         Arrow = true;
-                        graph.DrawGraph(vertex_l, edge_n, -1);
+                        graph.DrawGraph(vertex_l, edge_n);
                         break;
                     }
                 case 5:
-                    graph.DrawGraph(vertex_l, edge_n, -1);
+                    graph.DrawGraph(vertex_l, edge_n);
                     Field.Image = graph.BitMap;
                     break;
             }
@@ -123,33 +123,6 @@ namespace KursProject
             view_vertex.Enabled = true;
             Chain.Enabled = false;
         }
-
-/*        private void DeleteEdge_Click_1(object sender, EventArgs e)
-        {
-            if (listView1.Items.Count < 0) return;
-            if (!listView1.Focus()) return;
-            graph.RemoveEdge(edge_n, int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1);
-            Console.WriteLine(int.Parse(listView1.FocusedItem.SubItems[0].Text));
-            listView1.Items.Clear();
-            for (int i = 0; i < edge_n.Count; i++)
-            {
-                ListViewItem newItem = new((i + 1).ToString());
-
-                int buff1 = edge_n[i].x + 1;
-                int buff2 = edge_n[i].y + 1;
-
-                string buff_str = $"{buff1}->{buff2}";
-
-                ListViewItem.ListViewSubItem Path = new(newItem, buff_str);
-                newItem.SubItems.Add(Path);
-                listView1.Items.AddRange(new ListViewItem[] { newItem });
-            }
-
-           
-            graph.DrawGraph(vertex_l, edge_n);
-            Field.Image = graph.BitMap;
-
-        }*/
 
         private void Cycle_Click(object sender, EventArgs e)
         {

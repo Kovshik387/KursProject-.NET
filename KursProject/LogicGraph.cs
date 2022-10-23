@@ -178,16 +178,20 @@ namespace KursProject
             for (int i = 0; i < edge.Count; i++)
             {
 
-                if (i == cursor)  if (edge[cursor].x == edge[cursor].y) graphics.DrawArc(Configuration.SelectedPen,
-                vert[edge[cursor].x].v_x - Radius, vert[edge[cursor].x].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
-            else
-            {
-                graphics.DrawLine(Configuration.SelectedPen, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
-                vert[edge[cursor].y].v_x + Radius, vert[edge[cursor].y].v_y + Radius);
-                graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
-                      (vert[edge[cursor].x].v_x + Radius + vert[edge[cursor].y].v_x + Radius) / 2, (vert[edge[cursor].x].v_y + Radius + vert[edge[cursor].y].v_y + Radius) / 2);
-                continue;
-            }
+                if (i == cursor)
+                    if (edge[cursor].x == edge[cursor].y){
+                        graphics.DrawArc(Configuration.SelectedPen,
+                            vert[edge[cursor].x].v_x - Radius, vert[edge[cursor].x].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+                        continue;
+                    }
+                    else
+                    {
+                        graphics.DrawLine(Configuration.SelectedPen, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
+                        vert[edge[cursor].y].v_x + Radius, vert[edge[cursor].y].v_y + Radius);
+                        graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
+                        (vert[edge[cursor].x].v_x + Radius + vert[edge[cursor].y].v_x + Radius) / 2, (vert[edge[cursor].x].v_y + Radius + vert[edge[cursor].y].v_y + Radius) / 2);
+                        continue;
+                    }           
 
                 if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.EdgePen,
                     vert[edge[i].x].v_x - Radius, vert[edge[i].y].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
@@ -324,7 +328,7 @@ namespace KursProject
             {
                 if ((Math.Abs(x - vert[i].v_x) <= Radius) && (Math.Abs(y - vert[i].v_y) <= Radius))
                 {
-                    DrawGraph(vert, edge,-1);
+                    DrawGraph(vert, edge);
                     graphics.FillEllipse(Configuration.SelectedBrush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
                     graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.brush, vert[i].v_x + 6, vert[i].v_y + 4);
                     StartVertex = vert[i];
@@ -332,7 +336,7 @@ namespace KursProject
                     counter = 1;
                     break;
                 }
-                else { DrawGraph(vert, edge,-1); StartVertex = null; counter = 0; }
+                else { DrawGraph(vert, edge); StartVertex = null; counter = 0; }
             }
         }
 
