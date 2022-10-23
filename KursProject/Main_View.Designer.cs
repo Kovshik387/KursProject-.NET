@@ -36,12 +36,12 @@
             this.Cycle = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Delete_Edge = new System.Windows.Forms.TabPage();
-            this.DeleteEdge = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ListBoxMatrix = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Field)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.Delete_Edge.SuspendLayout();
@@ -125,7 +125,7 @@
             // 
             // Delete_Edge
             // 
-            this.Delete_Edge.Controls.Add(this.DeleteEdge);
+            this.Delete_Edge.Controls.Add(this.label1);
             this.Delete_Edge.Controls.Add(this.listView1);
             this.Delete_Edge.Location = new System.Drawing.Point(4, 24);
             this.Delete_Edge.Name = "Delete_Edge";
@@ -134,16 +134,6 @@
             this.Delete_Edge.TabIndex = 0;
             this.Delete_Edge.Text = "Ребра";
             this.Delete_Edge.UseVisualStyleBackColor = true;
-            // 
-            // DeleteEdge
-            // 
-            this.DeleteEdge.Location = new System.Drawing.Point(3, 408);
-            this.DeleteEdge.Name = "DeleteEdge";
-            this.DeleteEdge.Size = new System.Drawing.Size(251, 27);
-            this.DeleteEdge.TabIndex = 1;
-            this.DeleteEdge.Text = "Удалить ребро";
-            this.DeleteEdge.UseVisualStyleBackColor = true;
-            this.DeleteEdge.Click += new System.EventHandler(this.DeleteEdge_Click_1);
             // 
             // listView1
             // 
@@ -156,11 +146,12 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 6);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(251, 396);
+            this.listView1.Size = new System.Drawing.Size(251, 398);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.ListView1_SelectedIndexChanged);
+            this.listView1.DoubleClick += new System.EventHandler(this.ListView1_DoubleClick);
             // 
             // columnHeader1
             // 
@@ -194,6 +185,15 @@
             this.ListBoxMatrix.TabIndex = 8;
             this.ListBoxMatrix.Click += new System.EventHandler(this.ListBoxMatrix_Click_1);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 407);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(240, 30);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Для удаления ребра, необходимо \r\nпроизвести двойное нажатие по элементу";
+            // 
             // Main_View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -205,11 +205,15 @@
             this.Controls.Add(this.delete_vertex);
             this.Controls.Add(this.Draww);
             this.Controls.Add(this.Field);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(922, 579);
+            this.MinimumSize = new System.Drawing.Size(922, 579);
             this.Name = "Main_View";
             this.Text = "Fantokin option five";
             ((System.ComponentModel.ISupportInitialize)(this.Field)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.Delete_Edge.ResumeLayout(false);
+            this.Delete_Edge.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -230,6 +234,6 @@
         private ListBox ListBoxMatrix;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
-        private Button DeleteEdge;
+        private Label label1;
     }
 }

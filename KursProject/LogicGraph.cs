@@ -79,7 +79,7 @@ namespace KursProject
 
     public class Algoritm
     {
-        public void DFScycle(int postition, int endVert, List<EdgeN> E, int[] color, int unavailableEdge, List<int> cycle, List<string> cycle_matrix)
+        public void DFSKontur(int postition, int endVert, List<EdgeN> E, int[] color, int unavailableEdge, List<int> cycle, List<string> cycle_matrix)
         {
             //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемся, а вернуться необходимо
             if (postition != endVert)
@@ -119,7 +119,7 @@ namespace KursProject
                 {
                     List<int> cycleNEW = new(cycle);
                     cycleNEW.Add(E[w].y + 1);
-                    DFScycle(E[w].y, endVert, E, color, w, cycleNEW, cycle_matrix);
+                    DFSKontur(E[w].y, endVert, E, color, w, cycleNEW, cycle_matrix);
                     color[E[w].y] = 1;
                 }
             }
@@ -143,7 +143,6 @@ namespace KursProject
         }
 
         public int counter = 0;
-
         public void DrawCycle(List<Vertex> vert, List<EdgeN> edge)
         {
             ClearField();
@@ -171,8 +170,6 @@ namespace KursProject
             }
 
         }
-
-
 
         public void DrawGraph(List<Vertex> vert, List<EdgeN> edge, int cursor)
         {
@@ -234,7 +231,6 @@ namespace KursProject
             }
         }
 
-
         public bool InTheRangeVertex(List<Vertex> vertex, int x, int y)
         {
             foreach (var item in vertex)
@@ -286,7 +282,6 @@ namespace KursProject
             if (edge.Count == 0) edge.Clear();
             else edge.RemoveAt(cursor);
         }
-
         public void RemoveVertex(List<Vertex> vertex, List<EdgeN> edge, int x, int y)
         {
             for (int i = 0; i < vertex.Count; i++)
