@@ -97,7 +97,7 @@
             this.Chain.Name = "Chain";
             this.Chain.Size = new System.Drawing.Size(85, 25);
             this.Chain.TabIndex = 4;
-            this.Chain.Text = "Соеденить";
+            this.Chain.Text = "Соединить";
             this.Chain.UseVisualStyleBackColor = true;
             this.Chain.Click += new System.EventHandler(this.Chain_Click);
             // 
@@ -113,7 +113,8 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.Delete_Edge);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(626, 45);
@@ -146,6 +147,8 @@
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});

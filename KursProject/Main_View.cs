@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.Metrics;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Reflection.Metadata.Ecma335;
 using System.Windows.Forms.VisualStyles;
@@ -35,12 +36,12 @@ namespace KursProject
                 case 1:
                     if (graph.InTheRangeVertex(vertex_l, e.X, e.Y)) return;
                     vertex_l.Add(new(e.X - graph.Radius , e.Y - graph.Radius));
-                    graph.DrawGraph(vertex_l, edge_n,-1);
+                    graph.DrawGraph(vertex_l, edge_n);
                     Field.Image = graph.BitMap;
                     break;
                 case 2:
                     graph.RemoveVertex(vertex_l,edge_n, e.X - graph.Radius, e.Y - graph.Radius);
-                    graph.DrawGraph(vertex_l, edge_n,-1);
+                    graph.DrawGraph(vertex_l, edge_n);
                     Field.Image = graph.BitMap;
                     break;
                 case 3:
@@ -53,7 +54,7 @@ namespace KursProject
                     else
                     {
                         if (graph.Position != -1) graph.DragVertex(vertex_l, graph.Position, e.X - graph.Radius, e.Y - graph.Radius);
-                        graph.DrawGraph(vertex_l, edge_n, -1);
+                        graph.DrawGraph(vertex_l, edge_n);
                         NewLocation = true;
                     }
                     Field.Image = graph.BitMap;
@@ -125,7 +126,7 @@ namespace KursProject
 
         private void Chain_Click(object sender, EventArgs e)
         {
-            graph.DrawGraph(vertex_l, edge_n,-1);
+            graph.DrawGraph(vertex_l, edge_n);
             Field.Image = graph.BitMap;
             flag = 4;
             Draww.Enabled = true;
@@ -152,7 +153,7 @@ namespace KursProject
                 newItem.SubItems.Add(Path);
                 listView1.Items.AddRange(new ListViewItem[] { newItem });
             }
-            graph.DrawGraph(vertex_l, edge_n, -1);
+            graph.DrawGraph(vertex_l, edge_n);
             Field.Image = graph.BitMap;
         }
 
@@ -176,17 +177,18 @@ namespace KursProject
         private void ListBoxMatrix_Click_1(object sender, EventArgs e)
         {
             graph.ClearField();
-            graph.DrawGraph(vertex_l, edge_n, -1);
+            graph.DrawGraph(vertex_l, edge_n);
 
             try
             {
                 if (ListBoxMatrix.Items.Count == 0) return;
-                if (ListBoxMatrix == null) { graph.DrawGraph(vertex_l, edge_n, -1); ListBoxMatrix!.ClearSelected(); return; } ;
+                if (ListBoxMatrix == null) { graph.DrawGraph(vertex_l, edge_n ); ListBoxMatrix!.ClearSelected(); return; } ;
 
                 string temp = ListBoxMatrix.SelectedItem.ToString()!.Replace("-", "");
-                Console.WriteLine(temp);
 
                 List<EdgeN> buffer = new();
+
+
 
                 for (int i = 0; i < temp.Length - 1; i++)
                 {
@@ -208,12 +210,7 @@ namespace KursProject
             Field.Image = graph.BitMap;
             graph.DrawGraph(vertex_l, edge_n, int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1);
             
-
-
         }
-
-
-
         // Переосмысление: дискретная математика и линейная алгебра > мой хуй
     }
 

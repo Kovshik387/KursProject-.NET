@@ -129,7 +129,7 @@ namespace KursProject
 
     public class Graph
     {
-        Graphics graphics;
+        public Graphics graphics;
         public int Radius { get; private set; } = 15;
         public Bitmap? BitMap { get; set; }
 
@@ -210,6 +210,29 @@ namespace KursProject
             }
         }
 
+        public void DrawGraph(List<Vertex> vert, List<EdgeN> edge)
+        {
+
+            ClearField();
+            for (int i = 0; i < edge.Count; i++)
+            {
+                if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.EdgePen,
+                    vert[edge[i].x].v_x - Radius, vert[edge[i].y].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+                else
+                {
+                    graphics.DrawLine(Configuration.EdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
+                        vert[edge[i].y].v_x + Radius, vert[edge[i].y].v_y + Radius);
+                    graphics.DrawLine(Configuration.MiddleEdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
+                          (vert[edge[i].x].v_x + Radius + vert[edge[i].y].v_x + Radius) / 2, (vert[edge[i].x].v_y + Radius + vert[edge[i].y].v_y + Radius) / 2);
+                }
+            }
+
+            for (int i = 0; i < vert.Count; i++)
+            {
+                graphics.FillEllipse(Configuration.brush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
+                graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.insidebrush, vert[i].v_x + 6, vert[i].v_y + 4);
+            }
+        }
 
 
         public bool InTheRangeVertex(List<Vertex> vertex, int x, int y)
