@@ -44,6 +44,7 @@
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ListBoxMatrix = new System.Windows.Forms.ListBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.Field)).BeginInit();
             this.Control.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -145,7 +146,6 @@
             // 
             // SaveGraph
             // 
-            this.SaveGraph.Enabled = false;
             this.SaveGraph.Location = new System.Drawing.Point(6, 445);
             this.SaveGraph.Name = "SaveGraph";
             this.SaveGraph.Size = new System.Drawing.Size(165, 23);
@@ -225,6 +225,11 @@
             this.ListBoxMatrix.TabIndex = 8;
             this.ListBoxMatrix.Click += new System.EventHandler(this.ListBoxMatrix_Click_1);
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "png";
+            this.saveFileDialog1.Filter = "\"PNG (*.png)|*.png|Все файлы (*.*)|*.*\" (Parameter \'value\')";
+            // 
             // Main_View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -265,5 +270,6 @@
         private Label label1;
         private TabPage tabPage1;
         private Button SaveGraph;
+        private SaveFileDialog saveFileDialog1;
     }
 }

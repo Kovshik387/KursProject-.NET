@@ -81,18 +81,16 @@ namespace KursProject
     {
         public void DFSKontur(int postition, int endVert, List<EdgeN> E, int[] color, int unavailableEdge, List<int> cycle, List<string> cycle_matrix)
         {
-            //если u == endV, то эту вершину перекрашивать не нужно, иначе мы в нее не вернемся, а вернуться необходимо
-            if (postition != endVert)
-                color[postition] = 2;
+            if (postition != endVert)       // если значения равны, то мы не должны присваивать ей цвет, иначе мы не вернёмся в неё
+                color[postition] = 2;       // любое значение отличное от "белого" и "чёрного"
             else
             {
                 if (cycle.Count >= 2)
                 {
-                    cycle.Reverse();
                     string s = cycle[0].ToString();
                     for (int i = 1; i < cycle.Count; i++)
                         s += "-" + cycle[i].ToString();
-                    bool flag = false; //есть ли палиндром для этого цикла графа в листбоксе?
+                    bool flag = false;
                     for (int i = 0; i < cycle_matrix.Count; i++)
                         if (cycle_matrix[i].ToString() == s)
                         {
@@ -101,7 +99,6 @@ namespace KursProject
                         }
                     if (!flag)
                     {
-                        cycle.Reverse();
                         s = cycle[0].ToString();
                         for (int i = 1; i < cycle.Count; i++)
                             s += "-" + cycle[i].ToString();

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Reflection.Metadata.Ecma335;
 using System.Windows.Forms.VisualStyles;
 
@@ -84,7 +85,10 @@ namespace KursProject
                     graph.DrawGraph(vertex_l, edge_n);
                     Field.Image = graph.BitMap;
                     break;
-                default: break;
+                default:
+                    graph.DrawGraph(vertex_l, edge_n);
+                    Field.Image = graph.BitMap;
+                    break;
             }
         }
         private void Draww_Click(object sender, EventArgs e)
@@ -213,7 +217,6 @@ namespace KursProject
                     delete_vertex.Enabled = true;
                     view_vertex.Enabled = true;
                     Chain.Enabled = true;
-                    graph.DrawGraph(vertex_l, edge_n);
                     Arrow = true;
                     NewLocation = true;
                     break;
@@ -235,7 +238,10 @@ namespace KursProject
 
         private void SaveGraph_Click(object sender, EventArgs e)
         {
+            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;
 
+            string path = saveFileDialog1.FileName;
+            graph.BitMap!.Save(path + ".png",ImageFormat.Png);
         }
 
         // Переосмысление: дискретная математика и линейная алгебра > мой хуй
