@@ -34,16 +34,19 @@
             this.view_vertex = new System.Windows.Forms.Button();
             this.Chain = new System.Windows.Forms.Button();
             this.Cycle = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Control = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.SaveGraph = new System.Windows.Forms.Button();
             this.Delete_Edge = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ListBoxMatrix = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Field)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.Control.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.Delete_Edge.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
@@ -54,28 +57,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Field.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Field.Location = new System.Drawing.Point(12, 43);
+            this.Field.Location = new System.Drawing.Point(12, 12);
             this.Field.Name = "Field";
-            this.Field.Size = new System.Drawing.Size(608, 471);
+            this.Field.Size = new System.Drawing.Size(608, 502);
             this.Field.TabIndex = 0;
             this.Field.TabStop = false;
             this.Field.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Field_MouseClick);
             // 
             // Draww
             // 
-            this.Draww.Location = new System.Drawing.Point(12, 12);
+            this.Draww.Location = new System.Drawing.Point(6, 6);
             this.Draww.Name = "Draww";
-            this.Draww.Size = new System.Drawing.Size(86, 25);
+            this.Draww.Size = new System.Drawing.Size(165, 25);
             this.Draww.TabIndex = 1;
-            this.Draww.Text = "Добавление";
+            this.Draww.Text = "Добавление Вершины";
             this.Draww.UseVisualStyleBackColor = true;
             this.Draww.Click += new System.EventHandler(this.Draww_Click);
             // 
             // delete_vertex
             // 
-            this.delete_vertex.Location = new System.Drawing.Point(104, 12);
+            this.delete_vertex.Location = new System.Drawing.Point(6, 37);
             this.delete_vertex.Name = "delete_vertex";
-            this.delete_vertex.Size = new System.Drawing.Size(126, 25);
+            this.delete_vertex.Size = new System.Drawing.Size(165, 25);
             this.delete_vertex.TabIndex = 2;
             this.delete_vertex.Text = "Удаление Вершины";
             this.delete_vertex.UseVisualStyleBackColor = true;
@@ -83,7 +86,7 @@
             // 
             // view_vertex
             // 
-            this.view_vertex.Location = new System.Drawing.Point(327, 12);
+            this.view_vertex.Location = new System.Drawing.Point(6, 99);
             this.view_vertex.Name = "view_vertex";
             this.view_vertex.Size = new System.Drawing.Size(165, 25);
             this.view_vertex.TabIndex = 3;
@@ -93,11 +96,11 @@
             // 
             // Chain
             // 
-            this.Chain.Location = new System.Drawing.Point(236, 12);
+            this.Chain.Location = new System.Drawing.Point(6, 68);
             this.Chain.Name = "Chain";
-            this.Chain.Size = new System.Drawing.Size(85, 25);
+            this.Chain.Size = new System.Drawing.Size(165, 25);
             this.Chain.TabIndex = 4;
-            this.Chain.Text = "Соединить";
+            this.Chain.Text = "Соединить Вершины";
             this.Chain.UseVisualStyleBackColor = true;
             this.Chain.Click += new System.EventHandler(this.Chain_Click);
             // 
@@ -111,17 +114,45 @@
             this.Cycle.UseVisualStyleBackColor = true;
             this.Cycle.Click += new System.EventHandler(this.Cycle_Click);
             // 
-            // tabControl1
+            // Control
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Control.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.Delete_Edge);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(626, 45);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(268, 469);
-            this.tabControl1.TabIndex = 10;
+            this.Control.Controls.Add(this.tabPage1);
+            this.Control.Controls.Add(this.Delete_Edge);
+            this.Control.Controls.Add(this.tabPage2);
+            this.Control.Location = new System.Drawing.Point(626, 12);
+            this.Control.Name = "Control";
+            this.Control.SelectedIndex = 0;
+            this.Control.Size = new System.Drawing.Size(268, 502);
+            this.Control.TabIndex = 10;
+            this.Control.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.Control_Selecting);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.SaveGraph);
+            this.tabPage1.Controls.Add(this.Draww);
+            this.tabPage1.Controls.Add(this.view_vertex);
+            this.tabPage1.Controls.Add(this.Chain);
+            this.tabPage1.Controls.Add(this.delete_vertex);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(260, 474);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Элементы управления";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // SaveGraph
+            // 
+            this.SaveGraph.Enabled = false;
+            this.SaveGraph.Location = new System.Drawing.Point(6, 445);
+            this.SaveGraph.Name = "SaveGraph";
+            this.SaveGraph.Size = new System.Drawing.Size(165, 23);
+            this.SaveGraph.TabIndex = 5;
+            this.SaveGraph.Text = "Сохранить Граф";
+            this.SaveGraph.UseVisualStyleBackColor = true;
+            this.SaveGraph.Click += new System.EventHandler(this.SaveGraph_Click);
             // 
             // Delete_Edge
             // 
@@ -130,10 +161,19 @@
             this.Delete_Edge.Location = new System.Drawing.Point(4, 24);
             this.Delete_Edge.Name = "Delete_Edge";
             this.Delete_Edge.Padding = new System.Windows.Forms.Padding(3);
-            this.Delete_Edge.Size = new System.Drawing.Size(260, 441);
+            this.Delete_Edge.Size = new System.Drawing.Size(260, 474);
             this.Delete_Edge.TabIndex = 0;
             this.Delete_Edge.Text = "Ребра";
             this.Delete_Edge.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 440);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(240, 30);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Для удаления ребра, необходимо \r\nпроизвести двойное нажатие по элементу";
             // 
             // listView1
             // 
@@ -146,7 +186,7 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(3, 6);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(251, 398);
+            this.listView1.Size = new System.Drawing.Size(251, 431);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -170,7 +210,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(260, 441);
+            this.tabPage2.Size = new System.Drawing.Size(260, 474);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Контур";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -181,29 +221,16 @@
             this.ListBoxMatrix.ItemHeight = 15;
             this.ListBoxMatrix.Location = new System.Drawing.Point(6, 48);
             this.ListBoxMatrix.Name = "ListBoxMatrix";
-            this.ListBoxMatrix.Size = new System.Drawing.Size(248, 379);
+            this.ListBoxMatrix.Size = new System.Drawing.Size(248, 424);
             this.ListBoxMatrix.TabIndex = 8;
             this.ListBoxMatrix.Click += new System.EventHandler(this.ListBoxMatrix_Click_1);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 407);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(240, 30);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Для удаления ребра, необходимо \r\nпроизвести двойное нажатие по элементу";
             // 
             // Main_View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 540);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.Chain);
-            this.Controls.Add(this.view_vertex);
-            this.Controls.Add(this.delete_vertex);
-            this.Controls.Add(this.Draww);
+            this.Controls.Add(this.Control);
             this.Controls.Add(this.Field);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(922, 579);
@@ -211,7 +238,8 @@
             this.Name = "Main_View";
             this.Text = "Fantokin option five";
             ((System.ComponentModel.ISupportInitialize)(this.Field)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.Control.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.Delete_Edge.ResumeLayout(false);
             this.Delete_Edge.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -227,7 +255,7 @@
         private Button view_vertex;
         private Button Chain;
         private Button Cycle;
-        private TabControl tabControl1;
+        private TabControl Control;
         private TabPage Delete_Edge;
         private TabPage tabPage2;
         private ListView listView1;
@@ -235,5 +263,7 @@
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private Label label1;
+        private TabPage tabPage1;
+        private Button SaveGraph;
     }
 }

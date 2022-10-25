@@ -84,6 +84,7 @@ namespace KursProject
                     graph.DrawGraph(vertex_l, edge_n);
                     Field.Image = graph.BitMap;
                     break;
+                default: break;
             }
         }
         private void Draww_Click(object sender, EventArgs e)
@@ -151,7 +152,7 @@ namespace KursProject
                 if (ListBoxMatrix.Items.Count == 0) return;
                 if (ListBoxMatrix == null) { graph.DrawGraph(vertex_l, edge_n ); ListBoxMatrix!.ClearSelected(); return; } ;
 
-                string? temp = ListBoxMatrix.SelectedItem.ToString()!.Replace("-", "");
+                var temp = ListBoxMatrix.SelectedItem.ToString()!.Split("-");
 
                 List<EdgeN> buffer = new();
 
@@ -197,10 +198,44 @@ namespace KursProject
                 int buff2 = edge_n[i].y + 1;
 
                 string buff_str = $"{buff1}->{buff2}";
-                ListViewItem.ListViewSubItem Path = new(newItem, (buff_str));
+                ListViewItem.ListViewSubItem Path = new(newItem, buff_str);
                 newItem.SubItems.Add(Path);
                 listView1.Items.AddRange(new ListViewItem[] { newItem });
             }
+        }
+
+        private void Control_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            switch (Control.SelectedIndex)
+            {
+                case 0:
+                    Draww.Enabled = true;
+                    delete_vertex.Enabled = true;
+                    view_vertex.Enabled = true;
+                    Chain.Enabled = true;
+                    graph.DrawGraph(vertex_l, edge_n);
+                    Arrow = true;
+                    NewLocation = true;
+                    break;
+                case 1:
+                    graph.DrawGraph(vertex_l, edge_n);
+                    Arrow = true;
+                    NewLocation = true;
+                    flag = -1;
+                    break;
+                case 2:
+                    graph.DrawGraph(vertex_l, edge_n);
+                    Arrow = true;
+                    NewLocation = true;
+                    flag = -1;
+                    break;
+                default: break;
+            }
+        }
+
+        private void SaveGraph_Click(object sender, EventArgs e)
+        {
+
         }
 
         // Переосмысление: дискретная математика и линейная алгебра > мой хуй
