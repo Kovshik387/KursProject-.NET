@@ -140,7 +140,11 @@ namespace KursProject
                 alg.DFSKontur(i, i, edge_n, color, -1, cycle,cycle_matrix);
             }
 
+
+            if (cycle_matrix.Count == 0) MessageBox.Show("В данном графе нет контура", "Состояние");
+
             for (int i = 0; i < cycle_matrix.Count; i++) ListBoxMatrix.Items.Add(cycle_matrix[i]);
+           
         }
 
         private void ListBoxMatrix_Click_1(object sender, EventArgs e)
@@ -150,7 +154,7 @@ namespace KursProject
 
             try
             {
-                if (ListBoxMatrix.Items.Count == 0) return;
+                
                 if (ListBoxMatrix == null) { graph.DrawGraph(vertex_l, edge_n ); ListBoxMatrix!.ClearSelected(); return; } ;
 
                 var temp = ListBoxMatrix.SelectedItem.ToString()!.Split("-");
@@ -176,7 +180,7 @@ namespace KursProject
             //graph.DrawLine(ede, vertex_l);
             Field.Image = graph.BitMap;
             graph.DrawGraph(vertex_l, edge_n, int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1);
-            
+            ListBoxMatrix.Items.Clear();
         }
 
         private void ListView1_DoubleClick(object sender, EventArgs e)
