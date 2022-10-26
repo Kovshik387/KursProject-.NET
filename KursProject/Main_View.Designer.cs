@@ -36,6 +36,8 @@
             this.Cycle = new System.Windows.Forms.Button();
             this.Control = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.OpenSerial = new System.Windows.Forms.Button();
+            this.SaveSerial = new System.Windows.Forms.Button();
             this.SaveGraph = new System.Windows.Forms.Button();
             this.Delete_Edge = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,6 +47,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.ListBoxMatrix = new System.Windows.Forms.ListBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.Field)).BeginInit();
             this.Control.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -131,6 +135,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.OpenSerial);
+            this.tabPage1.Controls.Add(this.SaveSerial);
             this.tabPage1.Controls.Add(this.SaveGraph);
             this.tabPage1.Controls.Add(this.Draww);
             this.tabPage1.Controls.Add(this.view_vertex);
@@ -144,13 +150,33 @@
             this.tabPage1.Text = "Элементы управления";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // OpenSerial
+            // 
+            this.OpenSerial.Location = new System.Drawing.Point(6, 445);
+            this.OpenSerial.Name = "OpenSerial";
+            this.OpenSerial.Size = new System.Drawing.Size(248, 23);
+            this.OpenSerial.TabIndex = 7;
+            this.OpenSerial.Text = "Открыть граф";
+            this.OpenSerial.UseVisualStyleBackColor = true;
+            this.OpenSerial.Click += new System.EventHandler(this.OpenSerial_Click);
+            // 
+            // SaveSerial
+            // 
+            this.SaveSerial.Location = new System.Drawing.Point(6, 416);
+            this.SaveSerial.Name = "SaveSerial";
+            this.SaveSerial.Size = new System.Drawing.Size(248, 23);
+            this.SaveSerial.TabIndex = 6;
+            this.SaveSerial.Text = "Сохранить граф json";
+            this.SaveSerial.UseVisualStyleBackColor = true;
+            this.SaveSerial.Click += new System.EventHandler(this.SaveSerial_Click);
+            // 
             // SaveGraph
             // 
-            this.SaveGraph.Location = new System.Drawing.Point(6, 445);
+            this.SaveGraph.Location = new System.Drawing.Point(6, 387);
             this.SaveGraph.Name = "SaveGraph";
-            this.SaveGraph.Size = new System.Drawing.Size(165, 23);
+            this.SaveGraph.Size = new System.Drawing.Size(248, 23);
             this.SaveGraph.TabIndex = 5;
-            this.SaveGraph.Text = "Сохранить Граф";
+            this.SaveGraph.Text = "Сохранить Граф png";
             this.SaveGraph.UseVisualStyleBackColor = true;
             this.SaveGraph.Click += new System.EventHandler(this.SaveGraph_Click);
             // 
@@ -228,7 +254,17 @@
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "png";
-            this.saveFileDialog1.Filter = "\"PNG (*.png)|*.png|Все файлы (*.*)|*.*\" (Parameter \'value\')";
+            this.saveFileDialog1.Filter = "\"PNG (*.png)|*.png|Все файлы (*.*)|";
+            // 
+            // saveFileDialog2
+            // 
+            this.saveFileDialog2.DefaultExt = "json";
+            this.saveFileDialog2.Filter = "\"Json\" (*.json)|*.json|Все файлы (*.*)|";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "\"Json (*.json)|*.json|Все файлы (*.*)|";
             // 
             // Main_View
             // 
@@ -271,5 +307,9 @@
         private TabPage tabPage1;
         private Button SaveGraph;
         private SaveFileDialog saveFileDialog1;
+        private Button SaveSerial;
+        private SaveFileDialog saveFileDialog2;
+        private Button OpenSerial;
+        private OpenFileDialog openFileDialog1;
     }
 }

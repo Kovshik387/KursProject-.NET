@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics.Metrics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Reflection.Metadata.Ecma335;
-using System.Windows.Forms.VisualStyles;
+using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace KursProject
 {
@@ -241,7 +238,42 @@ namespace KursProject
             if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;
 
             string path = saveFileDialog1.FileName;
-            graph.BitMap!.Save(path + ".png",ImageFormat.Png);
+            graph.BitMap!.Save(path,ImageFormat.Png);
+        }
+
+        private async void SaveSerial_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog2.ShowDialog() == DialogResult.Cancel) return;
+
+            string path = saveFileDialog2.FileName;
+            File.Delete(path); // На случай если мы будем перезаписывать файл
+
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
+
+                
+                await JsonSerializer.SerializeAsync<ListSerializer>(fs,listSerializer);
+                Console.WriteLine("Data has been saved to file");
+            }
+
+        }
+
+        private async void OpenSerial_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
+
+            string path = openFileDialog1.FileName;
+
+            using (FileStream fs = new FileStream(path, FileMode.Open))
+            {
+                ListSerializer? listSerializer = await JsonSerializer.DeserializeAsync<ListSerializer>(fs);
+                vertex_l = listSerializer!.SerialVertex!;
+                edge_n = listSerializer!.SerialEdge!;
+                graph.DrawGraph(vertex_l, edge_n);
+                FillListView();
+                Field.Image = graph.BitMap;
+            }
         }
 
         // Переосмысление: дискретная математика и линейная алгебра > мой хуй

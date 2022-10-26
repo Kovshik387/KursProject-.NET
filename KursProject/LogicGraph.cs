@@ -12,10 +12,15 @@ using System.Windows.Forms.VisualStyles;
 
 namespace KursProject
 {
+    [Serializable]
     public class Vertex //Вершина
     {
-        public int v_x;
-        public int v_y;
+        public int v_x { get; set; }
+        public int v_y { get; set; }
+
+
+
+        public Vertex() { }
 
         public Vertex(int v_x, int v_y)
         {
@@ -24,9 +29,11 @@ namespace KursProject
         }
     }
 
+    [Serializable]
     public class EdgeN : ICloneable // переосмысление
     {
-        public int x, y;
+        public int x { get; set; }
+        public int y { get; set; }
 
         public EdgeN(int x,int y)
         {
@@ -108,16 +115,16 @@ namespace KursProject
                 }
             }
 
-            for (int w = 0; w < E.Count; w++)
+            for (int i = 0; i < E.Count; i++)
             {
-                if (w == unavailableEdge) continue;
+                if (i == unavailableEdge) continue;
 
-                if (color[E[w].y] == 1 && E[w].x == postition)
+                if (color[E[i].y] == 1 && E[i].x == postition)
                 {
                     List<int> cycleNEW = new(cycle);
-                    cycleNEW.Add(E[w].y + 1);
-                    DFSKontur(E[w].y, endVert, E, color, w, cycleNEW, cycle_matrix);
-                    color[E[w].y] = 1;
+                    cycleNEW.Add(E[i].y + 1);
+                    DFSKontur(E[i].y, endVert, E, color, i, cycleNEW, cycle_matrix);
+                    color[E[i].y] = 1;
                 }
             }
 
