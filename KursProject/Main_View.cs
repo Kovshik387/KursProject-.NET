@@ -154,7 +154,7 @@ namespace KursProject
 
             try
             {
-                
+                if (ListBoxMatrix.Items.Count == 0) return;
                 if (ListBoxMatrix == null) { graph.DrawGraph(vertex_l, edge_n ); ListBoxMatrix!.ClearSelected(); return; } ;
 
                 var temp = ListBoxMatrix.SelectedItem.ToString()!.Split("-");
