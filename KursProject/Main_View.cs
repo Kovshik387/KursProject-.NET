@@ -1,8 +1,5 @@
 using System.Drawing.Imaging;
-using System.Runtime.Serialization;
-using System.Text.Json;
-using System.Xml.Serialization;
-using System.IO;
+using System.Text.Json; //:(
 
 namespace KursProject
 {
@@ -199,8 +196,8 @@ namespace KursProject
             {
                 ListViewItem newItem = new((i + 1).ToString());
 
-                int buff1 = edge_n[i].x + 1;
-                int buff2 = edge_n[i].y + 1;
+                int buff1 = edge_n[i].IdStart + 1;
+                int buff2 = edge_n[i].IdEnd + 1;
 
                 string buff_str = $"{buff1}->{buff2}";
                 ListViewItem.ListViewSubItem Path = new(newItem, buff_str);
@@ -255,8 +252,6 @@ namespace KursProject
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
-
-                
                 await JsonSerializer.SerializeAsync<ListSerializer>(fs,listSerializer);
                 Console.WriteLine("Data has been saved to file");
             }

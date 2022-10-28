@@ -9,20 +9,16 @@ namespace KursProject
     [Serializable]
     public class ListSerializer
     {
-        public List<EdgeN>? SerialEdge { get; set; }
-        public List<Vertex>? SerialVertex { get; set; }
-
+        public List<EdgeN>? SerialEdge { get; set; } // ребра
+        public List<Vertex>? SerialVertex { get; set; } // 
         public ListSerializer() { }
 
         public ListSerializer(List<Vertex> vert, List<EdgeN> edge)
         {
             INIT();
-
             SerialEdge = edge;
             SerialVertex = vert;
-
         }
-
         private void INIT ()
         {
             SerialVertex = new List<Vertex>();

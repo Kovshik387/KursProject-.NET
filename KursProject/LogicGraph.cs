@@ -15,30 +15,28 @@ namespace KursProject
     [Serializable]
     public class Vertex //Вершина
     {
-        public int v_x { get; set; }
-        public int v_y { get; set; }
-
-
+        public int x { get; set; }
+        public int y { get; set; }
 
         public Vertex() { }
 
         public Vertex(int v_x, int v_y)
         {
-            this.v_x = v_x;
-            this.v_y = v_y;
+            this.x = v_x;
+            this.y = v_y;
         }
     }
 
     [Serializable]
     public class EdgeN : ICloneable // переосмысление
-    {
-        public int x { get; set; }
-        public int y { get; set; }
+    {   // ребро
+        public int IdStart { get; set; }
+        public int IdEnd { get; set; }
 
         public EdgeN(int x,int y)
         {
-            this.x = x;
-            this.y = y;
+            this.IdStart = x;
+            this.IdEnd = y;
         }
         public object Clone() => MemberwiseClone();
 
@@ -97,34 +95,21 @@ namespace KursProject
                     string s = cycle[0].ToString();
                     for (int i = 1; i < cycle.Count; i++)
                         s += "-" + cycle[i].ToString();
-                    bool flag = false;
-                    for (int i = 0; i < cycle_matrix.Count; i++)
-                        if (cycle_matrix[i].ToString() == s)
-                        {
-                            flag = true;
-                            break;
-                        }
-                    if (!flag)
-                    {
-                        s = cycle[0].ToString();
-                        for (int i = 1; i < cycle.Count; i++)
-                            s += "-" + cycle[i].ToString();
-                        cycle_matrix.Add(s);
-                    }
+                    cycle_matrix.Add(s);
                     return;
-                }
+                } 
             }
 
             for (int i = 0; i < E.Count; i++)
             {
                 if (i == unavailableEdge) continue;
 
-                if (color[E[i].y] == 1 && E[i].x == postition)
+                if (color[E[i].IdEnd] == 1 && E[i].IdStart == postition)
                 {
                     List<int> cycleNEW = new(cycle);
-                    cycleNEW.Add(E[i].y + 1);
-                    DFSKontur(E[i].y, endVert, E, color, i, cycleNEW, cycle_matrix);
-                    color[E[i].y] = 1;
+                    cycleNEW.Add(E[i].IdEnd + 1);
+                    DFSKontur(E[i].IdEnd, endVert, E, color, i, cycleNEW, cycle_matrix);
+                    color[E[i].IdEnd] = 1;
                 }
             }
 
@@ -152,24 +137,24 @@ namespace KursProject
             ClearField();
             for (int i = 0; i < edge.Count; i++)
             {
-                if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.SelectedPen,
-                    vert[edge[i].x - 1].v_x - Radius, vert[edge[i].x - 1].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+                if (edge[i].IdStart == edge[i].IdEnd) graphics.DrawArc(Configuration.SelectedPen,
+                    vert[edge[i].IdStart - 1].x - Radius, vert[edge[i].IdStart - 1].y - Radius, 2 * Radius, 2 * Radius, 90, 270);
                 else
                 {
-                    graphics.DrawLine(Configuration.SelectedPen, vert[edge[i].x - 1].v_x + Radius, vert[edge[i].x - 1].v_y + Radius,
-                    vert[edge[i].y - 1].v_x + Radius, vert[edge[i].y - 1].v_y + Radius);
-                    graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[i].x - 1].v_x + Radius, vert[edge[i].x - 1].v_y + Radius,
-                          (vert[edge[i].x - 1].v_x + Radius + vert[edge[i].y - 1].v_x + Radius) / 2, (vert[edge[i].x - 1].v_y + Radius + vert[edge[i].y - 1].v_y + Radius) / 2);
+                    graphics.DrawLine(Configuration.SelectedPen, vert[edge[i].IdStart - 1].x + Radius, vert[edge[i].IdStart - 1].y + Radius,
+                    vert[edge[i].IdEnd - 1].x + Radius, vert[edge[i].IdEnd - 1].y + Radius);
+                    graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[i].IdStart - 1].x + Radius, vert[edge[i].IdStart - 1].y + Radius,
+                          (vert[edge[i].IdStart - 1].x + Radius + vert[edge[i].IdEnd - 1].x + Radius) / 2, (vert[edge[i].IdStart - 1].y + Radius + vert[edge[i].IdEnd - 1].y + Radius) / 2);
                 }
             }
 
-            graphics.FillEllipse(Configuration.StartCycle, vert[edge[0].x - 1].v_x, vert[edge[0].x - 1].v_y, Radius * 2, Radius * 2);
-            graphics.DrawString((edge[0].x).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[0].x - 1].v_x + 6, vert[edge[0].x - 1].v_y + 4);
+            graphics.FillEllipse(Configuration.StartCycle, vert[edge[0].IdStart - 1].x, vert[edge[0].IdStart - 1].y, Radius * 2, Radius * 2);
+            graphics.DrawString((edge[0].IdStart).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[0].IdStart - 1].x + 6, vert[edge[0].IdStart - 1].y + 4);
 
             for (int i = 1; i < edge.Count; i++)
             {
-                graphics.FillEllipse(Configuration.SelectedBrush, vert[edge[i].x - 1].v_x, vert[edge[i].x - 1].v_y, Radius * 2, Radius * 2);
-                graphics.DrawString((edge[i].x).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[i].x - 1].v_x + 6, vert[edge[i].x - 1].v_y + 4);
+                graphics.FillEllipse(Configuration.SelectedBrush, vert[edge[i].IdStart - 1].x, vert[edge[i].IdStart - 1].y, Radius * 2, Radius * 2);
+                graphics.DrawString((edge[i].IdStart).ToString(), Configuration.font, Configuration.insidebrush, vert[edge[i].IdStart - 1].x + 6, vert[edge[i].IdStart - 1].y + 4);
 
             }
 
@@ -183,35 +168,35 @@ namespace KursProject
             {
 
                 if (i == cursor)
-                    if (edge[cursor].x == edge[cursor].y){
+                    if (edge[cursor].IdStart == edge[cursor].IdEnd){
                         graphics.DrawArc(Configuration.SelectedPen,
-                            vert[edge[cursor].x].v_x - Radius, vert[edge[cursor].x].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+                            vert[edge[cursor].IdStart].x - Radius, vert[edge[cursor].IdStart].y - Radius, 2 * Radius, 2 * Radius, 90, 270);
                         continue;
                     }
                     else
                     {
-                        graphics.DrawLine(Configuration.SelectedPen, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
-                        vert[edge[cursor].y].v_x + Radius, vert[edge[cursor].y].v_y + Radius);
-                        graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[cursor].x].v_x + Radius, vert[edge[cursor].x].v_y + Radius,
-                        (vert[edge[cursor].x].v_x + Radius + vert[edge[cursor].y].v_x + Radius) / 2, (vert[edge[cursor].x].v_y + Radius + vert[edge[cursor].y].v_y + Radius) / 2);
+                        graphics.DrawLine(Configuration.SelectedPen, vert[edge[cursor].IdStart].x + Radius, vert[edge[cursor].IdStart].y + Radius,
+                        vert[edge[cursor].IdEnd].x + Radius, vert[edge[cursor].IdEnd].y + Radius);
+                        graphics.DrawLine(Configuration.SelectedMiddle, vert[edge[cursor].IdStart].x + Radius, vert[edge[cursor].IdStart].y + Radius,
+                        (vert[edge[cursor].IdStart].x + Radius + vert[edge[cursor].IdEnd].x + Radius) / 2, (vert[edge[cursor].IdStart].y + Radius + vert[edge[cursor].IdEnd].y + Radius) / 2);
                         continue;
                     }           
 
-                if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.EdgePen,
-                    vert[edge[i].x].v_x - Radius, vert[edge[i].y].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+                if (edge[i].IdStart == edge[i].IdEnd) graphics.DrawArc(Configuration.EdgePen,
+                    vert[edge[i].IdStart].x - Radius, vert[edge[i].IdEnd].y - Radius, 2 * Radius, 2 * Radius, 90, 270);
                 else
                 {
-                    graphics.DrawLine(Configuration.EdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
-                        vert[edge[i].y].v_x + Radius, vert[edge[i].y].v_y + Radius);
-                    graphics.DrawLine(Configuration.MiddleEdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
-                          (vert[edge[i].x].v_x + Radius +  vert[edge[i].y].v_x + Radius) / 2, (vert[edge[i].x].v_y + Radius + vert[edge[i].y].v_y + Radius) / 2);
+                    graphics.DrawLine(Configuration.EdgePen, vert[edge[i].IdStart].x + Radius, vert[edge[i].IdStart].y + Radius,
+                        vert[edge[i].IdEnd].x + Radius, vert[edge[i].IdEnd].y + Radius);
+                    graphics.DrawLine(Configuration.MiddleEdgePen, vert[edge[i].IdStart].x + Radius, vert[edge[i].IdStart].y + Radius,
+                          (vert[edge[i].IdStart].x + Radius +  vert[edge[i].IdEnd].x + Radius) / 2, (vert[edge[i].IdStart].y + Radius + vert[edge[i].IdEnd].y + Radius) / 2);
                 }
             }
 
             for (int i = 0; i < vert.Count; i++)
             {
-                graphics.FillEllipse(Configuration.brush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
-                graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.insidebrush, vert[i].v_x + 6, vert[i].v_y + 4);
+                graphics.FillEllipse(Configuration.brush, vert[i].x, vert[i].y, Radius * 2, Radius * 2);
+                graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.insidebrush, vert[i].x + 6, vert[i].y + 4);
             }
         }
 
@@ -221,65 +206,65 @@ namespace KursProject
             ClearField();
             for (int i = 0; i < edge.Count; i++)
             {
-                if (edge[i].x == edge[i].y) graphics.DrawArc(Configuration.EdgePen,
-                    vert[edge[i].x].v_x - Radius, vert[edge[i].y].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+                if (edge[i].IdStart == edge[i].IdEnd) graphics.DrawArc(Configuration.EdgePen,
+                    vert[edge[i].IdStart].x - Radius, vert[edge[i].IdEnd].y - Radius, 2 * Radius, 2 * Radius, 90, 270);
                 else
                 {
-                    graphics.DrawLine(Configuration.EdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
-                        vert[edge[i].y].v_x + Radius, vert[edge[i].y].v_y + Radius);
-                    graphics.DrawLine(Configuration.MiddleEdgePen, vert[edge[i].x].v_x + Radius, vert[edge[i].x].v_y + Radius,
-                          (vert[edge[i].x].v_x + Radius + vert[edge[i].y].v_x + Radius) / 2, (vert[edge[i].x].v_y + Radius + vert[edge[i].y].v_y + Radius) / 2);
+                    graphics.DrawLine(Configuration.EdgePen, vert[edge[i].IdStart].x + Radius, vert[edge[i].IdStart].y + Radius,
+                        vert[edge[i].IdEnd].x + Radius, vert[edge[i].IdEnd].y + Radius);
+                    graphics.DrawLine(Configuration.MiddleEdgePen, vert[edge[i].IdStart].x + Radius, vert[edge[i].IdStart].y + Radius,
+                          (vert[edge[i].IdStart].x + Radius + vert[edge[i].IdEnd].x + Radius) / 2, (vert[edge[i].IdStart].y + Radius + vert[edge[i].IdEnd].y + Radius) / 2);
                 }
             }
 
             for (int i = 0; i < vert.Count; i++)
             {
-                graphics.FillEllipse(Configuration.brush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
-                graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.insidebrush, vert[i].v_x + 6, vert[i].v_y + 4);
+                graphics.FillEllipse(Configuration.brush, vert[i].x, vert[i].y, Radius * 2, Radius * 2);
+                graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.insidebrush, vert[i].x + 6, vert[i].y + 4);
             }
         }
 
         public bool InTheRangeVertex(List<Vertex> vertex, int x, int y)
         {
             foreach (var item in vertex)
-                if ((Math.Abs(x - item.v_x) <= Radius * 4) && (Math.Abs(y - item.v_y) <= Radius * 4)) return true;
+                if ((Math.Abs(x - item.x) <= Radius * 4) && (Math.Abs(y - item.y) <= Radius * 4)) return true;
             return false;
         }
 
         public int SearchVertex(List<Vertex> vertex, int x, int y)
         {
             for (int i = 0; i < vertex.Count; i++)
-                if ((Math.Abs(x - vertex[i].v_x) <= Radius * 4) && (Math.Abs(y - vertex[i].v_y) <= Radius * 4)) return i;
+                if ((Math.Abs(x - vertex[i].x) <= Radius * 4) && (Math.Abs(y - vertex[i].y) <= Radius * 4)) return i;
             return -1;
         }
 
         public void DragVertex(List<Vertex> vertex,int cursor,int x, int y)
         {
-            vertex[cursor].v_x = x;
-            vertex[cursor].v_y = y;
+            vertex[cursor].x = x;
+            vertex[cursor].y = y;
         }
 
         public void DrawLine(EdgeN edge, List<Vertex> vert)
         {
-            if (edge.x == edge.y) graphics.DrawArc(Configuration.SelectedPen,
-                vert[edge.x].v_x - Radius, vert[edge.x].v_y - Radius, 2 * Radius, 2 * Radius, 90, 270);
+            if (edge.IdStart == edge.IdEnd) graphics.DrawArc(Configuration.SelectedPen,
+                vert[edge.IdStart].x - Radius, vert[edge.IdStart].y - Radius, 2 * Radius, 2 * Radius, 90, 270);
             else
             {
-                graphics.DrawLine(Configuration.SelectedPen, vert[edge.x].v_x + Radius, vert[edge.x].v_y + Radius,
-                vert[edge.y].v_x + Radius, vert[edge.y].v_y + Radius);
-                graphics.DrawLine(Configuration.SelectedMiddle, vert[edge.x].v_x + Radius, vert[edge.x].v_y + Radius,
-                      (vert[edge.x].v_x + Radius + vert[edge.y].v_x + Radius) / 2, (vert[edge.x].v_y + Radius + vert[edge.y].v_y + Radius) / 2);
+                graphics.DrawLine(Configuration.SelectedPen, vert[edge.IdStart].x + Radius, vert[edge.IdStart].y + Radius,
+                vert[edge.IdEnd].x + Radius, vert[edge.IdEnd].y + Radius);
+                graphics.DrawLine(Configuration.SelectedMiddle, vert[edge.IdStart].x + Radius, vert[edge.IdStart].y + Radius,
+                      (vert[edge.IdStart].x + Radius + vert[edge.IdEnd].x + Radius) / 2, (vert[edge.IdStart].y + Radius + vert[edge.IdEnd].y + Radius) / 2);
             }
         }
         public void RemoveEdge(List<Vertex> vertex, List<EdgeN> edge,int x, int y)
         {
             for (int i = 0; i < edge.Count;i++)
             {
-                if (edge[i].x == edge[i].y) // Петля
+                if (edge[i].IdStart == edge[i].IdEnd) // Петля
                 {
-                    if ((Math.Pow((vertex[edge[i].x].v_x - Radius - x), 2) + (Math.Pow((vertex[edge[i].y].v_y - Radius - y), 2))) <= (Math.Pow(Radius + 4, 2))
+                    if ((Math.Pow((vertex[edge[i].IdStart].x - Radius - x), 2) + (Math.Pow((vertex[edge[i].IdEnd].y - Radius - y), 2))) <= (Math.Pow(Radius + 4, 2))
                         &&
-                       (Math.Pow((vertex[edge[i].x].v_x - Radius - x), 2) + (Math.Pow((vertex[edge[i].y].v_y - Radius - y), 2))) >= (Math.Pow(Radius - 4, 2)))
+                       (Math.Pow((vertex[edge[i].IdStart].x - Radius - x), 2) + (Math.Pow((vertex[edge[i].IdEnd].y - Radius - y), 2))) >= (Math.Pow(Radius - 4, 2)))
                         edge.RemoveAt(i);
                 }
             }
@@ -294,19 +279,19 @@ namespace KursProject
         {
             for (int i = 0; i < vertex.Count; i++)
             {
-                if ((Math.Abs(x - vertex[i].v_x) <= Radius) && (Math.Abs(y - vertex[i].v_y) <= Radius))
+                if ((Math.Abs(x - vertex[i].x) <= Radius) && (Math.Abs(y - vertex[i].y) <= Radius))
                 {
                     for (int j = 0; j < edge.Count;j++)
                     {
-                        if (edge[j].x == i || edge[j].y == i)
+                        if (edge[j].IdStart == i || edge[j].IdEnd == i)
                         {
                             edge.RemoveAt(j);
                             j--;
                         }
                         else
                         {
-                            if (edge[j].x > i) edge[j].x--;
-                            if (edge[j].y > i) edge[j].y--;
+                            if (edge[j].IdStart > i) edge[j].IdStart--;
+                            if (edge[j].IdEnd > i) edge[j].IdEnd--;
                         }
                     }
                     vertex.RemoveAt(i);
@@ -330,11 +315,11 @@ namespace KursProject
         {
             for (int i = 0; i < vert.Count; i++)
             {
-                if ((Math.Abs(x - vert[i].v_x) <= Radius) && (Math.Abs(y - vert[i].v_y) <= Radius))
+                if ((Math.Abs(x - vert[i].x) <= Radius) && (Math.Abs(y - vert[i].y) <= Radius))
                 {
                     DrawGraph(vert, edge);
-                    graphics.FillEllipse(Configuration.SelectedBrush, vert[i].v_x, vert[i].v_y, Radius * 2, Radius * 2);
-                    graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.brush, vert[i].v_x + 6, vert[i].v_y + 4);
+                    graphics.FillEllipse(Configuration.SelectedBrush, vert[i].x, vert[i].y, Radius * 2, Radius * 2);
+                    graphics.DrawString((i + 1).ToString(), Configuration.font, Configuration.brush, vert[i].x + 6, vert[i].y + 4);
                     StartVertex = vert[i];
                     Position = i;
                     counter = 1;
