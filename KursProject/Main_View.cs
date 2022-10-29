@@ -1,4 +1,5 @@
 using System.Drawing.Imaging;
+using System.IO;
 using System.Text.Json; //:(
 
 namespace KursProject
@@ -242,22 +243,6 @@ namespace KursProject
             graph.BitMap!.Save(path,ImageFormat.Png);
         }
 
-        private async void SaveSerial_Click(object sender, EventArgs e)
-        {
-            if (saveFileDialog2.ShowDialog() == DialogResult.Cancel) return;
-
-            string path = saveFileDialog2.FileName;
-            File.Delete(path); // На случай если мы будем перезаписывать файл
-
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
-                await JsonSerializer.SerializeAsync<ListSerializer>(fs,listSerializer);
-                Console.WriteLine("Data has been saved to file");
-            }
-
-        }
-
         private async void OpenSerial_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
@@ -274,7 +259,36 @@ namespace KursProject
                 Field.Image = graph.BitMap;
             }
         }
+        private void SaveSerial_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog2.ShowDialog() == DialogResult.Cancel) return;
 
+            string path = saveFileDialog2.FileName;
+            File.Delete(path); // На случай если мы будем перезаписывать файл
+
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
+                JsonSerializer.Serialize<ListSerializer>(fs,listSerializer);
+                Console.WriteLine("Data has been saved to file");
+            }
+
+        }
+
+        private void Send_JSON_Click(object sender, EventArgs e)
+        {
+            string path = "..\\..\\..\\temp\\temp.json";
+
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
+                JsonSerializer.Serialize<ListSerializer>(fs, listSerializer);
+                Console.WriteLine("Data has been saved to file");
+            }
+            NetMessage message = new NetMessage();
+            message.MessageSend(path);
+            
+        }
         // Переосмысление: дискретная математика и линейная алгебра > мой хуй
     }
 

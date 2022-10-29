@@ -36,6 +36,7 @@
             this.Cycle = new System.Windows.Forms.Button();
             this.Control = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.Send_JSON = new System.Windows.Forms.Button();
             this.OpenSerial = new System.Windows.Forms.Button();
             this.SaveSerial = new System.Windows.Forms.Button();
             this.SaveGraph = new System.Windows.Forms.Button();
@@ -135,6 +136,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.Send_JSON);
             this.tabPage1.Controls.Add(this.OpenSerial);
             this.tabPage1.Controls.Add(this.SaveSerial);
             this.tabPage1.Controls.Add(this.SaveGraph);
@@ -150,6 +152,16 @@
             this.tabPage1.Text = "Элементы управления";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // Send_JSON
+            // 
+            this.Send_JSON.Location = new System.Drawing.Point(6, 416);
+            this.Send_JSON.Name = "Send_JSON";
+            this.Send_JSON.Size = new System.Drawing.Size(248, 23);
+            this.Send_JSON.TabIndex = 8;
+            this.Send_JSON.Text = "Отправить граф json";
+            this.Send_JSON.UseVisualStyleBackColor = true;
+            this.Send_JSON.Click += new System.EventHandler(this.Send_JSON_Click);
+            // 
             // OpenSerial
             // 
             this.OpenSerial.Location = new System.Drawing.Point(6, 445);
@@ -162,7 +174,7 @@
             // 
             // SaveSerial
             // 
-            this.SaveSerial.Location = new System.Drawing.Point(6, 416);
+            this.SaveSerial.Location = new System.Drawing.Point(6, 387);
             this.SaveSerial.Name = "SaveSerial";
             this.SaveSerial.Size = new System.Drawing.Size(248, 23);
             this.SaveSerial.TabIndex = 6;
@@ -172,7 +184,7 @@
             // 
             // SaveGraph
             // 
-            this.SaveGraph.Location = new System.Drawing.Point(6, 387);
+            this.SaveGraph.Location = new System.Drawing.Point(6, 358);
             this.SaveGraph.Name = "SaveGraph";
             this.SaveGraph.Size = new System.Drawing.Size(248, 23);
             this.SaveGraph.TabIndex = 5;
@@ -311,5 +323,6 @@
         private SaveFileDialog saveFileDialog2;
         private Button OpenSerial;
         private OpenFileDialog openFileDialog1;
+        private Button Send_JSON;
     }
 }
