@@ -3,12 +3,13 @@ using System.Net;
 using System.IO;
 using System.Threading.Tasks;
 using System.Net.Mail;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace KursProject
 {
     internal class NetMessage
     {
-        static string to_message = "pumb00sable@gmail.com";
+        public string? To_Message { get; set; } = "pumb00sable@gmail.com";
         // Отправка файла json на почту
         public void MessageSend(string path)
         {
@@ -18,18 +19,20 @@ namespace KursProject
             
             MailAddress from = new("kursprojecttask5fantokin@gmail.com", "Фантокин Н.С");
 
-            MailAddress to = new MailAddress(to_message);
+            MailAddress to = new MailAddress(To_Message!);
 
+            FileInfo file = new(path);
+            
             MailMessage message = new MailMessage(from, to)
             {
                 Subject = "Граф",
+                Body = file.Name.Replace(".json",""),
             };
 
             message.Attachments.Add(new Attachment(path));
-            
             smtpClient.Send(message);
-            Console.WriteLine("Отправлено: "+to_message);
-            
+            message.Attachments.Dispose();
+            Console.WriteLine("Отправлено: "+ To_Message);
         }
     }
 }

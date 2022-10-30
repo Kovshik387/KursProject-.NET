@@ -28,17 +28,16 @@ namespace KursProject
     }
 
     [Serializable]
-    public class EdgeN : ICloneable // переосмысление
+    public class EdgeN
     {   // ребро
         public int IdStart { get; set; }
         public int IdEnd { get; set; }
 
-        public EdgeN(int x,int y)
+        public EdgeN(int IdStart, int IdEnd)
         {
-            this.IdStart = x;
-            this.IdEnd = y;
+            this.IdStart = IdStart;
+            this.IdEnd = IdEnd;
         }
-        public object Clone() => MemberwiseClone();
 
     }
 

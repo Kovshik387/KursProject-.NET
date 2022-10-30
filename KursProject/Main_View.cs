@@ -243,7 +243,7 @@ namespace KursProject
             graph.BitMap!.Save(path,ImageFormat.Png);
         }
 
-        private async void OpenSerial_Click(object sender, EventArgs e)
+        private void OpenSerial_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
 
@@ -251,7 +251,7 @@ namespace KursProject
 
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
-                ListSerializer? listSerializer = await JsonSerializer.DeserializeAsync<ListSerializer>(fs);
+                ListSerializer? listSerializer = JsonSerializer.Deserialize<ListSerializer>(fs);
                 vertex_l = listSerializer!.SerialVertex!;
                 edge_n = listSerializer!.SerialEdge!;
                 graph.DrawGraph(vertex_l, edge_n);
@@ -272,22 +272,12 @@ namespace KursProject
                 JsonSerializer.Serialize<ListSerializer>(fs,listSerializer);
                 Console.WriteLine("Data has been saved to file");
             }
-
         }
 
         private void Send_JSON_Click(object sender, EventArgs e)
         {
-            string path = "..\\..\\..\\temp\\temp.json";
-
-            using (FileStream fs = new FileStream(path, FileMode.Create))
-            {
-                ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
-                JsonSerializer.Serialize<ListSerializer>(fs, listSerializer);
-                Console.WriteLine("Data has been saved to file");
-            }
-            NetMessage message = new NetMessage();
-            message.MessageSend(path);
-            
+            MailSend net = new(vertex_l,edge_n);
+            net.ShowDialog();
         }
         // Переосмысление: дискретная математика и линейная алгебра > мой хуй
     }

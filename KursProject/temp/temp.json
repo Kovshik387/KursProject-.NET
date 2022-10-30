@@ -1,1 +1,1 @@
-{"SerialEdge":[],"SerialVertex":[]}
+{"SerialEdge":[{"IdStart":0,"IdEnd":1},{"IdStart":1,"IdEnd":2},{"IdStart":2,"IdEnd":3},{"IdStart":3,"IdEnd":0}],"SerialVertex":[{"x":108,"y":100},{"x":360,"y":95},{"x":399,"y":265},{"x":115,"y":302}]}
