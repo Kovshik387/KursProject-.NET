@@ -33,9 +33,9 @@ namespace KursProject
         public int IdStart { get; set; }
         public int IdEnd { get; set; }
 
-        public EdgeN(int IdStart, int IdEnd)
+        public EdgeN(int x, int IdEnd)
         {
-            this.IdStart = IdStart;
+            this.IdStart = x;
             this.IdEnd = IdEnd;
         }
 

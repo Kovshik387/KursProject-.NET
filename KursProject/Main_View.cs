@@ -276,6 +276,7 @@ namespace KursProject
 
         private void Send_JSON_Click(object sender, EventArgs e)
         {
+            graph.BitMap!.Save("..\\..\\..\\temp\\" + "temp.png", ImageFormat.Png);
             MailSend net = new(vertex_l,edge_n);
             net.ShowDialog();
         }

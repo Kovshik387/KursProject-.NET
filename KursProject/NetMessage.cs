@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace KursProject
 {
@@ -30,8 +32,10 @@ namespace KursProject
             };
 
             message.Attachments.Add(new Attachment(path));
+            message.Attachments.Add(new Attachment("..\\..\\..\\temp\\" + "temp.png"));
             smtpClient.Send(message);
             message.Attachments.Dispose();
+            File.Delete("..\\..\\..\\temp\\" + "temp.png");
             Console.WriteLine("Отправлено: "+ To_Message);
         }
     }

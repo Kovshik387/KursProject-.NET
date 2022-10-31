@@ -40,6 +40,7 @@ namespace KursProject
             Correct.ForeColor = Color.Black;
             Correct.Text = "";
             string path = "";
+            
             if (NameF == null) path = "..\\..\\..\\temp\\temp.json";
             else path = "..\\..\\..\\temp\\" + NameF.Text + ".json";
 
