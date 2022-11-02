@@ -1,14 +1,4 @@
-﻿using KursProject;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
+﻿using System.Drawing.Drawing2D;
 
 namespace KursProject
 {
@@ -20,10 +10,10 @@ namespace KursProject
 
         public Vertex() { }
 
-        public Vertex(int v_x, int v_y)
+        public Vertex(int x, int y)
         {
-            this.x = v_x;
-            this.y = v_y;
+            this.x = x;
+            this.y = y;
         }
     }
 
@@ -33,9 +23,9 @@ namespace KursProject
         public int IdStart { get; set; }
         public int IdEnd { get; set; }
 
-        public EdgeN(int x, int IdEnd)
+        public EdgeN(int IdStart, int IdEnd)
         {
-            this.IdStart = x;
+            this.IdStart = IdStart;
             this.IdEnd = IdEnd;
         }
 
