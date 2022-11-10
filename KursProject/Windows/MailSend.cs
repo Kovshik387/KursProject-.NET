@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using KursProject.DeliverJson;
 
 namespace KursProject
 {
@@ -55,6 +56,8 @@ namespace KursProject
 
             try { message.MessageSend(path); }
             catch { MessageBox.Show("Не удалость отправить файл", "Ошибка"); return; }
+            FileInfo file = new(path);
+            file.Delete();
 
         }
 

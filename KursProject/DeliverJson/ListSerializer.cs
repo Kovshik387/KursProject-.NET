@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KursProject
+namespace KursProject.DeliverJson
 {
     [Serializable]
     public class ListSerializer
@@ -20,7 +20,7 @@ namespace KursProject
             SerialEdge = edge;
         }
 
-        private void INIT ()
+        private void INIT()
         {
             SerialVertex = new List<Vertex>();
             SerialEdge = new List<EdgeN>();

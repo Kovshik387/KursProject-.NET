@@ -1,6 +1,9 @@
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text.Json; //:(
+using KursProject.DeliverJson;
+using KursProject.GraphLogic;
+using KursProject.Algorithm;
 
 namespace KursProject
 {
@@ -10,17 +13,18 @@ namespace KursProject
         public List<Vertex> vertex_l;
         public List<EdgeN> edge_n;
         public List<string> cycle_matrix;
-        public Algoritm alg;
+        public Algorithm.Algorithm alg;
         int flag = -1;
         bool Arrow = true;
         bool NewLocation = true;
+
         public Main_View()
         {
             InitializeComponent();
             vertex_l = new List<Vertex>();
             edge_n = new List<EdgeN>();
             cycle_matrix = new List<string>();
-            alg = new Algoritm();
+            alg = new Algorithm.Algorithm();
             graph = new Graph(Field.Size.Width, Field.Size.Height);
             Field.Image = graph.BitMap;
         }
@@ -129,20 +133,12 @@ namespace KursProject
             ListBoxMatrix.Items.Clear();
             cycle_matrix.Clear();
 
-            int[] color = new int[vertex_l.Count];
-            for (int i = 0; i < vertex_l.Count; i++)
-            {
-                for (int j = 0; j < vertex_l.Count;j++)
-                    color[j] = 1;
-                List<int> cycle = new() {i + 1};
-                alg.DFSKontur(i, i, edge_n, color, -1, cycle,cycle_matrix);
-            }
-
+            alg.StartSearchKontur(edge_n, vertex_l,ref cycle_matrix);
 
             if (cycle_matrix.Count == 0) MessageBox.Show("В данном графе нет контура", "Состояние");
 
             for (int i = 0; i < cycle_matrix.Count; i++) ListBoxMatrix.Items.Add(cycle_matrix[i]);
-           
+            
         }
 
         private void ListBoxMatrix_Click_1(object sender, EventArgs e)
@@ -160,9 +156,8 @@ namespace KursProject
                 List<EdgeN> buffer = new();
 
                 for (int i = 0; i < temp.Length - 1; i++)
-                {
                     buffer.Add(new(int.Parse(temp[i].ToString()), int.Parse(temp[i + 1].ToString())));
-                }
+                
                 graph.DrawCycle(vertex_l, buffer);
 
                 Field.Image = graph.BitMap;
