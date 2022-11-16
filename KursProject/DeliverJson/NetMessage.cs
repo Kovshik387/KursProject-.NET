@@ -1,11 +1,5 @@
-﻿using System;
-using System.Net;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Net;
 using System.Net.Mail;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
 using KursProject.Interface;
 
 namespace KursProject.DeliverJson
@@ -20,8 +14,7 @@ namespace KursProject.DeliverJson
             smtpClient.Credentials = new NetworkCredential("kursprojecttask5fantokin@gmail.com", "qqpytrfmzcjpaycn");
             smtpClient.EnableSsl = true;
 
-            MailAddress from = new("kursprojecttask5fantokin@gmail.com", "Фантокин Н.С");
-
+            MailAddress from = new MailAddress("kursprojecttask5fantokin@gmail.com", "Фантокин Н.С");
             MailAddress to = new MailAddress(To_Message!);
 
             FileInfo file = new(path);
@@ -33,10 +26,10 @@ namespace KursProject.DeliverJson
             };
 
             message.Attachments.Add(new Attachment(path));
-            message.Attachments.Add(new Attachment("..\\..\\..\\temp\\" + "temp.png"));
+            message.Attachments.Add(new Attachment("temp.png"));
             smtpClient.Send(message);
             message.Attachments.Dispose();
-            File.Delete("..\\..\\..\\temp\\" + "temp.png");
+            File.Delete("temp.png");
             Console.WriteLine("Отправлено: " + To_Message);
         }
     }

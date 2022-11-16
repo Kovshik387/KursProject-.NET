@@ -270,13 +270,14 @@
             // 
             // saveFileDialog2
             // 
-            this.saveFileDialog2.DefaultExt = "json";
-            this.saveFileDialog2.Filter = "\"Json\" (*.json)|*.json|Все файлы (*.*)|";
+            this.saveFileDialog2.DefaultExt = "Graph";
+            this.saveFileDialog2.Filter = "\"Graph\" (*.json)|*.json|Все файлы (*.*)|";
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "\"Json (*.json)|*.json|Все файлы (*.*)|";
+            this.openFileDialog1.Filter = "\"GraphJson\" (*.json)|*.json|\"GraphXml \"(*.graphproj)|*.graphproj|Все файлы (*.*)|" +
+    "";
             // 
             // Main_View
             // 

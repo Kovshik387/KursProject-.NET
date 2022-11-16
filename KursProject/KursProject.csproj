@@ -9,11 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="temp\" />
+    <PackageReference Include="MimeKit" Version="3.4.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MimeKit" Version="3.4.2" />
+    <Reference Include="TransferDataPackage">
+      <HintPath>..\..\..\..\Downloads\TransferDataPackage.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

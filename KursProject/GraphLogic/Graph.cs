@@ -16,7 +16,7 @@ namespace KursProject.GraphLogic
             graphics = Graphics.FromImage(BitMap);
         }
 
-        public override void DrawCycle(List<Vertex> vert, List<EdgeN> edge)
+        public void DrawCycle(List<Vertex> vert, List<EdgeN> edge)
         {
             ClearField();
             for (int i = 0; i < edge.Count; i++)
@@ -84,7 +84,6 @@ namespace KursProject.GraphLogic
         }
         public override void DrawGraph(List<Vertex> vert, List<EdgeN> edge)
         {
-
             ClearField();
             for (int i = 0; i < edge.Count; i++)
             {
@@ -198,7 +197,7 @@ namespace KursProject.GraphLogic
             }
         }
 
-        public override void ClearField()
+        public void ClearField()
         {
             graphics!.Clear(Color.White);
         }

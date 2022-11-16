@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using KursProject.DeliverJson;
+using KursProject.ServiceSerializer;
+using TransferDataPackage.DataSerializations;
 
 namespace KursProject
 {
@@ -18,10 +21,10 @@ namespace KursProject
     {
         List<Vertex> vertices;
         List<EdgeN> edgeNs;
-        public MailSend(List<Vertex> v, List<EdgeN> e)
+        public MailSend(List<Vertex> vertices, List<EdgeN> edgeNs)
         {
-            this.edgeNs = e;
-            this.vertices = v;
+            this.vertices = vertices;
+            this.edgeNs = edgeNs;
             InitializeComponent();
         }
 
@@ -38,32 +41,23 @@ namespace KursProject
                 Correct.ForeColor = Color.Red;
                 return;
             }
+
             Correct.ForeColor = Color.Black;
             Correct.Text = "";
-            string path = "";
-            
-            if (NameF == null) path = "..\\..\\..\\temp\\temp.json";
-            else path = "..\\..\\..\\temp\\" + NameF.Text + ".json";
-
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                ListSerializer listSerializer = new ListSerializer(vertices, edgeNs);
-                JsonSerializer.Serialize<ListSerializer>(fs, listSerializer);
-                Console.WriteLine("Data has been saved to file");
-            }
-
+            string path = (string)default!;
             message.To_Message = Mail.Text;
+            
+            if (NameF == null) path = "File.json";
+            else path = NameF.Text + ".json";
+
+            FileObjectSerializer fileObjectSerializer = new FileObjectSerializer();
+            fileObjectSerializer.CreateJsonData(path, new ListSerializer(vertices, edgeNs));
 
             try { message.MessageSend(path); }
             catch { MessageBox.Show("Не удалость отправить файл", "Ошибка"); return; }
-            FileInfo file = new(path);
-            file.Delete();
-
+            File.Delete(path);
         }
 
-        private void Back_ToMainView_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void Back_ToMainView_Click(object sender, EventArgs e) => this.Close();
     }
 }

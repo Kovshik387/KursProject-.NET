@@ -18,7 +18,6 @@ namespace KursProject.GraphLogic
 
         public int counter = 0;
 
-        public abstract void DrawCycle(List<Vertex> vert, List<EdgeN> edge);
         public abstract void DrawGraph(List<Vertex> vert, List<EdgeN> edge, int cursor);
         public abstract void DrawGraph(List<Vertex> vert, List<EdgeN> edge);
         public abstract bool InTheRangeVertex(List<Vertex> vertex, int x, int y);
@@ -28,6 +27,5 @@ namespace KursProject.GraphLogic
         public abstract void RemoveEdge(List<EdgeN> edge, int cursor);
         public abstract void RemoveVertex(List<Vertex> vertex, List<EdgeN> edge, int x, int y);
         public abstract void SearchStringGraph(List<Vertex> vert, int x, int y, List<EdgeN> ede);
-        public abstract void ClearField();
     }
 }

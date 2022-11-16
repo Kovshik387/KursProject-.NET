@@ -1,9 +1,14 @@
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text.Json; //:(
-using KursProject.DeliverJson;
 using KursProject.GraphLogic;
 using KursProject.Algorithm;
+using KursProject.ServiceSerializer;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using TransferDataPackage.DataSerializations;
 
 namespace KursProject
 {
@@ -163,14 +168,10 @@ namespace KursProject
                 Field.Image = graph.BitMap;
             }
             catch (Exception exc) { MessageBox.Show("Элемент не выбран\n" + exc.Message, "Ошибка"); }
-
         }
 
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //EdgeN ede = edge_n[int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1];
-            
-            //graph.DrawLine(ede, vertex_l);
             Field.Image = graph.BitMap;
             graph.DrawGraph(vertex_l, edge_n, int.Parse(listView1.FocusedItem.SubItems[0].Text) - 1);
             ListBoxMatrix.Items.Clear();
@@ -191,12 +192,8 @@ namespace KursProject
             for (int i = 0; i < edge_n.Count; i++)
             {
                 ListViewItem newItem = new((i + 1).ToString());
+                ListViewItem.ListViewSubItem Path = new(newItem, $"{edge_n[i].IdStart + 1}->{edge_n[i].IdEnd + 1}");
 
-                int buff1 = edge_n[i].IdStart + 1;
-                int buff2 = edge_n[i].IdEnd + 1;
-
-                string buff_str = $"{buff1}->{buff2}";
-                ListViewItem.ListViewSubItem Path = new(newItem, buff_str);
                 newItem.SubItems.Add(Path);
                 listView1.Items.AddRange(new ListViewItem[] { newItem });
             }
@@ -234,21 +231,36 @@ namespace KursProject
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.Cancel) return;
 
-            string path = saveFileDialog1.FileName;
-            graph.BitMap!.Save(path,ImageFormat.Png);
+            graph.BitMap!.Save(saveFileDialog1.FileName, ImageFormat.Png);
         }
 
         private void OpenSerial_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel) return;
 
-            string path = openFileDialog1.FileName;
+            var x = Regex.Match(openFileDialog1.FileName, ".graphproj");
+            var j = Regex.Match(openFileDialog1.FileName, ".json");
 
-            using (FileStream fs = new FileStream(path, FileMode.Open))
+            if (x.Success)
             {
-                ListSerializer? listSerializer = JsonSerializer.Deserialize<ListSerializer>(fs);
-                vertex_l = listSerializer!.SerialVertex!;
-                edge_n = listSerializer!.SerialEdge!;
+                FileObjectSerializer createObjectSerializer = new FileObjectSerializer();
+                var adapter = createObjectSerializer.ReadXmlData(openFileDialog1.FileName);
+                
+                vertex_l = adapter.list.SerialVertex!;
+                edge_n = adapter.list.SerialEdge!;
+                
+                graph.DrawGraph(vertex_l, edge_n);
+                FillListView();
+                Field.Image = graph.BitMap;
+            }
+            if (j.Success)
+            {
+                FileObjectSerializer createObjectSerializer = new FileObjectSerializer();
+                var adapter = createObjectSerializer.ReadJsonData(openFileDialog1.FileName);
+                
+                vertex_l = adapter.list.SerialVertex!;
+                edge_n = adapter.list.SerialEdge!;
+                
                 graph.DrawGraph(vertex_l, edge_n);
                 FillListView();
                 Field.Image = graph.BitMap;
@@ -258,24 +270,20 @@ namespace KursProject
         {
             if (saveFileDialog2.ShowDialog() == DialogResult.Cancel) return;
 
-            string path = saveFileDialog2.FileName;
-            File.Delete(path); // На случай если мы будем перезаписывать файл
+            FileObjectSerializer createObjectSerializer = new FileObjectSerializer();
+            File.Delete(saveFileDialog2.FileName);
 
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                ListSerializer listSerializer = new ListSerializer(vertex_l, edge_n);
-                JsonSerializer.Serialize<ListSerializer>(fs,listSerializer);
-                Console.WriteLine("Data has been saved to file");
-            }
+            FileObjectSerializer fileObjectSerializer = new FileObjectSerializer();
+            fileObjectSerializer.CreateJsonData(saveFileDialog2.FileName, new ListSerializer(vertex_l,edge_n));
         }
 
         private void Send_JSON_Click(object sender, EventArgs e)
         {
-            graph.BitMap!.Save("..\\..\\..\\temp\\" + "temp.png", ImageFormat.Png);
+            graph.BitMap!.Save("temp.png", ImageFormat.Png);
             MailSend net = new(vertex_l,edge_n);
             net.ShowDialog();
         }
-        // Переосмысление: дискретная математика и линейная алгебра > мой хуй
+
     }
 
 }
